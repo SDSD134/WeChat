@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
         String openid = null;
         User user = new User();
         System.out.println("进入");
+        System.out.println(result);
         try {
              json = (JSONObject) (new JSONParser().parse(result));
             session_key = (String) json.get("session_key");

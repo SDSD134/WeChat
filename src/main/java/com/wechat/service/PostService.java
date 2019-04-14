@@ -10,4 +10,6 @@ public interface PostService {
     ServerResponse<List<Post>> getAllPostByUSer(String userid);
 
     ServerResponse<List<Post>> getAllPost(int pageNum,int pageSize);
+
+    ServerResponse<String> deletPostById(int id);
 }

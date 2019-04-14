@@ -6,6 +6,7 @@ import com.wechat.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -25,12 +26,25 @@ public class PostController {
         return  postService.getAllPostByUSer(userid);
     }
 
-   /* //获取所有帖子
+    //获取所有帖子
     @RequestMapping(value = "/getAllPost")
     @ResponseBody
-    public ServerResponse<List<Post>> getAllPost(){
+    public ServerResponse getAllPost(@RequestParam(value = "pageNum",defaultValue = "1")int pageNum,
+                                     @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         //假设可以获取(userid已存在)
-        return  postService.getAllPost();
+        return  postService.getAllPost(pageNum,pageSize);
+    }
+
+   /* //获取所有帖子
+    @RequestMapping(value = "/deletPostByUser")
+    @ResponseBody
+    public ServerResponse<String> deletPostByUser(String postId){
+        //假设可以获取(userid已存在)
+        if (postId == null) {
+            return  ServerResponse.createByErrorMessage("参数错误");
+        }
+        int id = Integer.parseInt(postId)
+        return  postService.deletPostById(id);
     }*/
 
 }

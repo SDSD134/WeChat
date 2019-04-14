@@ -9,7 +9,7 @@ public class Comment {
 
     private Integer postId;
 
-    private Integer goodcount;
+    private String goodcount;
 
     private Date creatime;
 
@@ -41,12 +41,12 @@ public class Comment {
         this.postId = postId;
     }
 
-    public Integer getGoodcount() {
+    public String getGoodcount() {
         return goodcount;
     }
 
-    public void setGoodcount(Integer goodcount) {
-        this.goodcount = goodcount;
+    public void setGoodcount(String goodcount) {
+        this.goodcount = goodcount == null ? null : goodcount.trim();
     }
 
     public Date getCreatime() {

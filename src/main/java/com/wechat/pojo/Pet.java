@@ -5,7 +5,7 @@ import java.util.Date;
 public class Pet {
     private Integer petId;
 
-    private Integer petType;
+    private String petType;
 
     private String petPrice;
 
@@ -17,6 +17,10 @@ public class Pet {
 
     private Date updatetime;
 
+    private String petCity;
+
+    private String petDesc;
+
     public Integer getPetId() {
         return petId;
     }
@@ -25,12 +29,12 @@ public class Pet {
         this.petId = petId;
     }
 
-    public Integer getPetType() {
+    public String getPetType() {
         return petType;
     }
 
-    public void setPetType(Integer petType) {
-        this.petType = petType;
+    public void setPetType(String petType) {
+        this.petType = petType == null ? null : petType.trim();
     }
 
     public String getPetPrice() {
@@ -71,5 +75,21 @@ public class Pet {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public String getPetCity() {
+        return petCity;
+    }
+
+    public void setPetCity(String petCity) {
+        this.petCity = petCity == null ? null : petCity.trim();
+    }
+
+    public String getPetDesc() {
+        return petDesc;
+    }
+
+    public void setPetDesc(String petDesc) {
+        this.petDesc = petDesc == null ? null : petDesc.trim();
     }
 }

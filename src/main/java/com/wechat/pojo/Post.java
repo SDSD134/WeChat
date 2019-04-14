@@ -1,17 +1,25 @@
 package com.wechat.pojo;
 
+import java.util.Date;
+
 public class Post {
     private Integer postId;
+
     private String postTopic;
-    private String postContent;
-    private String postRead;
-    private Integer postGoodCount;
-    private String postImage;
+
+    private Integer postRead;
+
+    private Integer postGoodcount;
+
     private String userId;
+
     private Integer postReward;
+
     private Integer postType;
-    private String createTime;
-    private String updateTime;
+
+    private Date createtime;
+
+    private Date updatetime;
 
     public Integer getPostId() {
         return postId;
@@ -26,39 +34,23 @@ public class Post {
     }
 
     public void setPostTopic(String postTopic) {
-        this.postTopic = postTopic;
+        this.postTopic = postTopic == null ? null : postTopic.trim();
     }
 
-    public String getPostContent() {
-        return postContent;
-    }
-
-    public void setPostContent(String postContent) {
-        this.postContent = postContent;
-    }
-
-    public String getPostRead() {
+    public Integer getPostRead() {
         return postRead;
     }
 
-    public void setPostRead(String postRead) {
+    public void setPostRead(Integer postRead) {
         this.postRead = postRead;
     }
 
-    public Integer getPostGoodCount() {
-        return postGoodCount;
+    public Integer getPostGoodcount() {
+        return postGoodcount;
     }
 
-    public void setPostGoodCount(Integer postGoodCount) {
-        this.postGoodCount = postGoodCount;
-    }
-
-    public String getPostImage() {
-        return postImage;
-    }
-
-    public void setPostImage(String postImage) {
-        this.postImage = postImage;
+    public void setPostGoodcount(Integer postGoodcount) {
+        this.postGoodcount = postGoodcount;
     }
 
     public String getUserId() {
@@ -66,7 +58,7 @@ public class Post {
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        this.userId = userId == null ? null : userId.trim();
     }
 
     public Integer getPostReward() {
@@ -85,19 +77,19 @@ public class Post {
         this.postType = postType;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public Date getCreatetime() {
+        return createtime;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
-    public String getUpdateTime() {
-        return updateTime;
+    public Date getUpdatetime() {
+        return updatetime;
     }
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
     }
 }

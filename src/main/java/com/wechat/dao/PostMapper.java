@@ -12,4 +12,6 @@ public interface PostMapper {
     Integer  countPostByUser (String userid);
 
     List<Post>  getAllPost();
+
+    void deletPostById(int id);
 }
