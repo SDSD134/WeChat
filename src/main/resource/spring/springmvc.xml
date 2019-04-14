@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+    <!--spring注解注入-->
+    <context:component-scan base-package="com.wechat.controller"></context:component-scan>
+
+    <mvc:annotation-driven/>
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+    <!-- 配置json转换器 -->
+    <bean id="jsonMessageConverters" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    <context:property-placeholder location="classpath:properties/*.properties"   ignore-unresolvable="true"/>
+
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <!-- JSON视图拦截器，碰到ResponseBody会触发 -->
+                <ref bean="jsonMessageConverters"/>
+            </list>
+        </property>
+    </bean>
+
+   <!-- &lt;!&ndash; 配置拦截器 &ndash;&gt;
+    <mvc:interceptors>
+        <mvc:interceptor>
+            &lt;!&ndash; 拦截所有mvc控制器 &ndash;&gt;
+            <mvc:mapping path="/**"/>
+            &lt;!&ndash; mvc:exclude-mapping是另外一种拦截，它可以在你后来的测试中对某个页面进行不拦截，这样就不用在
+            				LoginInterceptor的preHandler方法里面获取不拦截的请求uri地址了(优选) &ndash;&gt;
+            <mvc:exclude-mapping path="/user/login" />
+            <bean class="com.lingshi.bookstore.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+
+
+
+
+
+
+    <!--上传文件-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        <!-- 最大内存大小 -->
+       <!-- <property name="maxInMemorySize" value="10240"/>-->
+        <!-- 最大文件大小，-1为不限制大小 -->
+        <property name="maxUploadSize" value="5242880"/>
+    </bean>
+
+</beans>

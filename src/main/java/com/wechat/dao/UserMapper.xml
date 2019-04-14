@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wechat.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.wechat.pojo.User" >
+        <id column="user_id" property="userId" jdbcType="VARCHAR" />
+        <id column="openid" property="openid" jdbcType="VARCHAR" />
+        <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+        <result column="session_key" property="sessionkey" jdbcType="VARCHAR" />
+        <result column="avatarUrl" property="avatarUrl" jdbcType="VARCHAR" />
+        <result column="gender" property="gender" jdbcType="INTEGER" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="createtime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="updatetime" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="countUserById" resultType="java.lang.Integer" parameterType="java.lang.String">
+       SELECT COUNT(*) FROM USER WHERE  user_id = #{userId}
+    </select>
+
+    <select id="UserById" resultType="com.wechat.pojo.User" parameterType="java.lang.String">
+        SELECT * FROM USER WHERE  user_id = #{userId}
+    </select>
+
+    <insert id="insertUser" parameterType="com.wechat.pojo.User">
+       insert into user (user_id,openid,session_key,nickName,avatarUrl,
+       gender,address,createtime,updatetime)
+    values (#{userId,jdbcType=VARCHAR},#{openid,jdbcType=VARCHAR},#{sessionkey,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR}
+    ,#{avatarUrl,jdbcType=VARCHAR},#{gender,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},
+    NOW(),NOW())
+    </insert>
+
+    <update id="updateUerByID" parameterType="com.wechat.pojo.User">
+        update USER
+        <set >
+            <if test="openid != null" >
+                openid = #{openid,jdbcType=VARCHAR},
+            </if>
+            <if test="sessionkey != null" >
+                session_key = #{sessionkey,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null" >
+                nickName = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="avatarUrl != null" >
+                avatarUrl = #{avatarUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null" >
+                gender = #{gender,jdbcType=INTEGER},
+            </if>
+            <if test="address != null" >
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime == null" >
+                updateTime = now(),
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=VARCHAR}
+    </update>
+</mapper>
