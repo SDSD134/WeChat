@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wechat.dao.PetMapper">
+    <resultMap id="petDetail" type="petDetailVo">
+        <id property="petId" column="pet_id"/>
+        <result property="petType" column="pet_type"/>
+        <result property="petPrice" column="pet_price"/>
+        <result property="petTitle" column="pet_title"/>
+        <result property="petDesc" column="pet_desc"/>
+        <result property="creaetetime" column="createtime"/>
+        <result property="petCity" column="pet_city"/>
+        <result property="wx" column="wx"/>
+        <result property="phone" column="phone"/>
+        <association property="user" javaType="user">
+            <id property="userId" column="user_id"/>
+            <result property="avatarUrl" column="avatarUrl"/>
+            <result property="gender" column="gender"/>
+            <result property="address" column="address"/>
+        </association>
+        <collection property="petImages" ofType="petImage">
+            <id property="petImageId" column="pet_image_id"/>
+            <result property="petImageUrl" column="pet_image_url"/>
+        </collection>
+    </resultMap>
+    <select id="findPetDetail" parameterType="Integer" resultMap="petDetail">
+        select
+            p.pet_id petId,
+            p.pet_type petType,
+            p.pet_price petPrice,
+            p.pet_title petTitle,
+            p.pet_desc petDesc,
+            p.createtime,
+            p.pet_city petCity,
+            p.wx,
+            p.phone,
+            u.user_id userId,
+            u.avatarUrl,
+            u.gender,
+            u.address,
+            pi.pet_image_id petImageId,
+            pi.pet_image_url petImageUrl
+        from pet p
+        left join user u on p.user_id = u.user_id
+        left join pet_image pi on p.pet_id = pi.pet_id
+        where p.pet_id = #{petId}
+    </select>
+    <select id="selectAllPet" parameterType="pet" resultType="petVo">
+        select
+          p.pet_id petId,
+          p.pet_type petType,
+          p.pet_price petPrice,
+          p.user_id userId,
+          p.pet_title petTitle,
+          p.pet_city petCity,
+          pi.pet_image_url mainImage
+        from pet p
+        left join pet_image pi on p.pet_id = pi.pet_id
+        <where>
+            pi.pet_image_type = 1
+            and p.pet_type = #{petType}
+            <if test="petTitle !=null">
+              and p.pet_title like '%${petTitle}%'
+            </if>
+             <if test="petCity != null">
+                 and p.pet_city = #{petCity}
+             </if>
+        </where>
+        order by pet_id desc
+    </select>
+
+    <insert id="publish" parameterType="pet">
+        INSERT INTO `pet` (
+          `pet_type`,
+          `pet_price`,
+          `user_id`,
+          `pet_title`,
+          `pet_desc`,
+          `createtime`,
+          `updatetime`,
+          `pet_city`,
+          `wx`,
+          `phone`
+        )
+        VALUES
+          (
+            #{petType},
+            #{petPrice},
+            #{userId},
+            #{petTitle},
+            #{petDesc},
+            now(),
+            now(),
+           #{petCity},
+            #{wx},
+            #{phone}
+      )
+    </insert>
+    <insert id="uploadImage" parameterType="petImage">
+        INSERT INTO pet_image (
+          pet_image_type,
+          pet_image_url,
+          pet_id,
+          createtime,
+          updatetime
+        )
+        VALUES
+          (
+           #{petImageType},
+           #{petImageUrl},
+           #{petId},
+           now(),
+           now()
+          )
+    </insert>
+    <delete id="deletePet" parameterType="Integer">
+        DELETE
+        FROM
+          pet
+        WHERE pet_id = #{petId}
+
+    </delete>
+    <delete id="deletePetImage" parameterType="Integer">
+        DELETE
+        FROM
+          pet_image
+        WHERE pet_id = #{petId}
+    </delete>
+</mapper>

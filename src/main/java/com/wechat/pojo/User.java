@@ -7,7 +7,7 @@ public class User {
     private String sessionkey;
     private String avatarUrl;
     private String userId;
-    private int gender;
+    private Integer gender;
     private String nickName;
     private String address;
     private Date createTime;

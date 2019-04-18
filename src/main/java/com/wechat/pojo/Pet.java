@@ -4,18 +4,41 @@ import java.util.Date;
 
 public class Pet {
     private Integer petId;
-
-    private Integer petType;
-
+    private String petType;
     private String petPrice;
-
     private String userId;
-
     private String petTitle;
-
-    private Date creatime;
-
+    private String petDesc;
+    private Date createtime;
     private Date updatetime;
+    private String petCity;
+    private String wx;
+    private String phone;
+    private User user;
+
+    public String getWx() {
+        return wx;
+    }
+
+    public void setWx(String wx) {
+        this.wx = wx;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Integer getPetId() {
         return petId;
@@ -25,11 +48,11 @@ public class Pet {
         this.petId = petId;
     }
 
-    public Integer getPetType() {
+    public String getPetType() {
         return petType;
     }
 
-    public void setPetType(Integer petType) {
+    public void setPetType(String petType) {
         this.petType = petType;
     }
 
@@ -57,12 +80,12 @@ public class Pet {
         this.petTitle = petTitle == null ? null : petTitle.trim();
     }
 
-    public Date getCreatime() {
-        return creatime;
+    public Date getCreatetime() {
+        return createtime;
     }
 
-    public void setCreatime(Date creatime) {
-        this.creatime = creatime;
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
     public Date getUpdatetime() {
@@ -71,5 +94,21 @@ public class Pet {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public String getPetCity() {
+        return petCity;
+    }
+
+    public void setPetCity(String petCity) {
+        this.petCity = petCity;
+    }
+
+    public String getPetDesc() {
+        return petDesc;
+    }
+
+    public void setPetDesc(String petDesc) {
+        this.petDesc = petDesc;
     }
 }
