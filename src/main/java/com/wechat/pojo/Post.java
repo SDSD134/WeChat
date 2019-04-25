@@ -7,19 +7,19 @@ public class Post {
 
     private String postTopic;
 
-    private Integer postRead;
+    private String postRead;
 
-    private Integer postGoodcount;
+    private String postGoodcount;
 
     private String userId;
 
-    private Integer postReward;
+    private String postReward;
 
-    private Integer postType;
+    private String postType;
 
-    private Date createtime;
+    private Date createTime;
 
-    private Date updatetime;
+    private Date updateTime;
 
     public Integer getPostId() {
         return postId;
@@ -34,22 +34,22 @@ public class Post {
     }
 
     public void setPostTopic(String postTopic) {
-        this.postTopic = postTopic == null ? null : postTopic.trim();
+        this.postTopic = postTopic;
     }
 
-    public Integer getPostRead() {
+    public String getPostRead() {
         return postRead;
     }
 
-    public void setPostRead(Integer postRead) {
+    public void setPostRead(String postRead) {
         this.postRead = postRead;
     }
 
-    public Integer getPostGoodcount() {
+    public String getPostGoodcount() {
         return postGoodcount;
     }
 
-    public void setPostGoodcount(Integer postGoodcount) {
+    public void setPostGoodcount(String postGoodcount) {
         this.postGoodcount = postGoodcount;
     }
 
@@ -58,38 +58,38 @@ public class Post {
     }
 
     public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+        this.userId = userId;
     }
 
-    public Integer getPostReward() {
+    public String getPostReward() {
         return postReward;
     }
 
-    public void setPostReward(Integer postReward) {
+    public void setPostReward(String postReward) {
         this.postReward = postReward;
     }
 
-    public Integer getPostType() {
+    public String getPostType() {
         return postType;
     }
 
-    public void setPostType(Integer postType) {
+    public void setPostType(String postType) {
         this.postType = postType;
     }
 
-    public Date getCreatetime() {
-        return createtime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public Date getUpdatetime() {
-        return updatetime;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdatetime(Date updatetime) {
-        this.updatetime = updatetime;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

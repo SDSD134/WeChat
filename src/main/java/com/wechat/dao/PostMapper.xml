@@ -5,12 +5,12 @@
         <id column="post_id" property="postId" jdbcType="INTEGER" />
         <id column="post_topic" property="postTopic" jdbcType="VARCHAR" />
         <result column="post_content" property="postContent" jdbcType="VARCHAR" />
-        <result column="post_read" property="postRead" jdbcType="INTEGER" />
-        <result column="post_goodCount" property="postGoodCount" jdbcType="INTEGER" />
+        <result column="post_read" property="postRead" jdbcType="VARCHAR" />
+        <result column="post_goodCount" property="postGoodCount" jdbcType="VARCHAR" />
         <result column="post_image" property="postImage" jdbcType="VARCHAR" />
         <result column="user_id" property="userId" jdbcType="VARCHAR" />
-        <result column="post_reward" property="postReward" jdbcType="INTEGER" />
-        <result column="post_type" property="postType" jdbcType="INTEGER" />
+        <result column="post_reward" property="postReward" jdbcType="VARCHAR" />
+        <result column="post_type" property="postType" jdbcType="VARCHAR" />
         <result column="createtime" property="createTime" jdbcType="TIMESTAMP" />
         <result column="updatetime" property="updateTime" jdbcType="TIMESTAMP" />
     </resultMap>
@@ -24,4 +24,12 @@
     <select id="getAllPost" resultMap="BaseResultMap">
         SELECT * from  post
     </select>
+    <delete id="deletPostById" parameterType="java.lang.Integer">
+        DELETE from post where post_id=#{id}
+    </delete>
+    <!--<update id="addPraiseById" parameterType="java.lang.Integer">
+        UPDATE post SET post_goodCount=post_goodCount+ 1 WHERE post_id = #{id};
+    </update>-->
+
+
 </mapper>

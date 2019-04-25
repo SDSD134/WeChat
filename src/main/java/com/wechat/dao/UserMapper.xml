@@ -3,21 +3,22 @@
 <mapper namespace="com.wechat.dao.UserMapper">
     <resultMap id="BaseResultMap" type="com.wechat.pojo.User" >
         <id column="user_id" property="userId" jdbcType="VARCHAR" />
-        <id column="openid" property="openid" jdbcType="VARCHAR" />
-        <result column="nickName" property="nickName" jdbcType="VARCHAR" />
-        <result column="session_key" property="sessionkey" jdbcType="VARCHAR" />
-        <result column="avatarUrl" property="avatarUrl" jdbcType="VARCHAR" />
-        <result column="gender" property="gender" jdbcType="INTEGER" />
+        <result column="openid" property="openid" jdbcType="VARCHAR" />
+        <result column="session_key" property="sessionKey" jdbcType="VARCHAR" />
+        <result column="avatarUrl" property="avatarurl" jdbcType="VARCHAR" />
+        <result column="nickName" property="nickname" jdbcType="VARCHAR" />
+        <result column="gender" property="gender" jdbcType="VARCHAR" />
         <result column="address" property="address" jdbcType="VARCHAR" />
-        <result column="createtime" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="updatetime" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+        <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+        <result column="user_type" property="userType" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="countUserById" resultType="java.lang.Integer" parameterType="java.lang.String">
        SELECT COUNT(*) FROM USER WHERE  user_id = #{userId}
     </select>
 
-    <select id="UserById" resultType="com.wechat.pojo.User" parameterType="java.lang.String">
+    <select id="findUserById" resultType="com.wechat.pojo.User" parameterType="java.lang.String">
         SELECT * FROM USER WHERE  user_id = #{userId}
     </select>
 
@@ -29,28 +30,28 @@
     NOW(),NOW())
     </insert>
 
-    <update id="updateUerByID" parameterType="com.wechat.pojo.User">
+    <update id="updateUserByID" parameterType="com.wechat.pojo.User">
         update USER
         <set >
-            <if test="openid != null" >
+            <if test="openid != null and openid !=''" >
                 openid = #{openid,jdbcType=VARCHAR},
             </if>
-            <if test="sessionkey != null" >
+            <if test="sessionkey != null and sessionkey !=''" >
                 session_key = #{sessionkey,jdbcType=VARCHAR},
             </if>
-            <if test="nickName != null" >
+            <if test="nickName != null and nickName != ''" >
                 nickName = #{nickName,jdbcType=VARCHAR},
             </if>
-            <if test="avatarUrl != null" >
+            <if test="avatarUrl != null and avatarUrl !=''" >
                 avatarUrl = #{avatarUrl,jdbcType=VARCHAR},
             </if>
-            <if test="gender != null" >
-                gender = #{gender,jdbcType=INTEGER},
+            <if test="gender != null and gender != ''" >
+                gender = #{gender,jdbcType=VARCHAR},
             </if>
-            <if test="address != null" >
+            <if test="address != null and address !=''" >
                 address = #{address,jdbcType=VARCHAR},
             </if>
-            <if test="updateTime == null" >
+            <if test="updateTime == null and updateTime == ''" >
                 updateTime = now(),
             </if>
         </set>

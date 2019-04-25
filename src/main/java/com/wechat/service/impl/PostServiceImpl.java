@@ -20,8 +20,8 @@ public class PostServiceImpl implements PostService {
     public ServerResponse<List<Post>>  getAllPostByUSer(String userid) {
         List<Post> postList = postMapper.getPostByUser(userid);
         Integer count = postMapper.countPostByUser(userid);
-        if (!(count > 0) && postList.isEmpty()) {
-            ServerResponse.createBySuccessMessage("此用户没有写过贴吧");
+            if (!(count > 0) && postList.isEmpty()) {
+            return ServerResponse.createBySuccessMessage("此用户没有写过贴吧");
         }
         System.out.println(postList);
         return ServerResponse.createBySuccess("获取成功",postList);
@@ -43,9 +43,31 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ServerResponse<String> deletPostById(int id) {
-        postMapper.deletPostById(id);
-        return null;
+        Integer deletCount = postMapper.deletPostById(id);
+        if (deletCount > 0) {
+            return ServerResponse.createBySuccessMessage("删除成功");
+        }
+        return ServerResponse.createBySuccessMessage("删除失败，参数错误");
 
+    }
+
+    @Override
+    public ServerResponse<String> addPostRead(int id) {
+        Integer addCount = postMapper.addPostRead(id);
+        if (addCount > 0) {
+            return ServerResponse.createBySuccessMessage("成功");
+        }
+        return ServerResponse.createByErrorMessage("失败");
+
+    }
+
+    @Override
+    public ServerResponse<String> addPraiseById(int id) {
+        Integer addCount = postMapper.addPraiseById(id);
+        if (addCount > 0) {
+            return ServerResponse.createBySuccessMessage("成功");
+        }
+        return ServerResponse.createByErrorMessage("失败");
     }
 
 
