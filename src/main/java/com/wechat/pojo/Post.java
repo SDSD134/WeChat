@@ -1,17 +1,25 @@
 package com.wechat.pojo;
 
+import java.util.Date;
+
 public class Post {
     private Integer postId;
+
     private String postTopic;
-    private String postContent;
+
     private String postRead;
-    private Integer postGoodCount;
-    private String postImage;
+
+    private String postGoodcount;
+
     private String userId;
-    private Integer postReward;
-    private Integer postType;
-    private String createTime;
-    private String updateTime;
+
+    private String postReward;
+
+    private String postType;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     public Integer getPostId() {
         return postId;
@@ -29,14 +37,6 @@ public class Post {
         this.postTopic = postTopic;
     }
 
-    public String getPostContent() {
-        return postContent;
-    }
-
-    public void setPostContent(String postContent) {
-        this.postContent = postContent;
-    }
-
     public String getPostRead() {
         return postRead;
     }
@@ -45,20 +45,12 @@ public class Post {
         this.postRead = postRead;
     }
 
-    public Integer getPostGoodCount() {
-        return postGoodCount;
+    public String getPostGoodcount() {
+        return postGoodcount;
     }
 
-    public void setPostGoodCount(Integer postGoodCount) {
-        this.postGoodCount = postGoodCount;
-    }
-
-    public String getPostImage() {
-        return postImage;
-    }
-
-    public void setPostImage(String postImage) {
-        this.postImage = postImage;
+    public void setPostGoodcount(String postGoodcount) {
+        this.postGoodcount = postGoodcount;
     }
 
     public String getUserId() {
@@ -69,35 +61,35 @@ public class Post {
         this.userId = userId;
     }
 
-    public Integer getPostReward() {
+    public String getPostReward() {
         return postReward;
     }
 
-    public void setPostReward(Integer postReward) {
+    public void setPostReward(String postReward) {
         this.postReward = postReward;
     }
 
-    public Integer getPostType() {
+    public String getPostType() {
         return postType;
     }
 
-    public void setPostType(Integer postType) {
+    public void setPostType(String postType) {
         this.postType = postType;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public String getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 }

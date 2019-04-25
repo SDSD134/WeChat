@@ -5,9 +5,9 @@ import java.util.Date;
 public class User {
     private String openid;
     private String sessionkey;
-    private String avatarUrl;
+    private String avatarUrl;//头像地址
     private String userId;
-    private Integer gender;
+    private String gender;
     private String nickName;
     private String address;
     private Date createTime;
@@ -46,11 +46,11 @@ public class User {
         this.userId = userId;
     }
 
-    public Integer getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

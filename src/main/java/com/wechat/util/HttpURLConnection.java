@@ -40,7 +40,12 @@ public class HttpURLConnection {
             connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
 
             //建立实际的连接
-            connection.connect();
+            try {
+                connection.connect();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
 
             Map<String, List<String>> map = connection.getHeaderFields();
             //定义 BufferedReader输入流来读取URL的响应

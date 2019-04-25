@@ -3,12 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+       http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
     <!--spring注解注入-->
     <context:component-scan base-package="com.wechat.controller"></context:component-scan>
+    <context:component-scan base-package="com.wechat.websocket"></context:component-scan>
 
     <mvc:annotation-driven/>
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -34,17 +37,28 @@
         </property>
     </bean>
 
-   <!-- &lt;!&ndash; 配置拦截器 &ndash;&gt;
+    <!-- 配置拦截器 -->
     <mvc:interceptors>
         <mvc:interceptor>
-            &lt;!&ndash; 拦截所有mvc控制器 &ndash;&gt;
+            <!-- 拦截所有mvc控制器 -->
             <mvc:mapping path="/**"/>
-            &lt;!&ndash; mvc:exclude-mapping是另外一种拦截，它可以在你后来的测试中对某个页面进行不拦截，这样就不用在
-            				LoginInterceptor的preHandler方法里面获取不拦截的请求uri地址了(优选) &ndash;&gt;
+            <!-- mvc:exclude-mapping是另外一种拦截，它可以在你后来的测试中对某个页面进行不拦截，这样就不用在
+            				LoginInterceptor的preHandler方法里面获取不拦截的请求uri地址了(优选) -->
             <mvc:exclude-mapping path="/user/login" />
-            <bean class="com.lingshi.bookstore.interceptor.LoginInterceptor"></bean>
+            <mvc:exclude-mapping path="/websocket"/>
+            <bean class="com.wechat.controller.LoginInterceptor"></bean>
         </mvc:interceptor>
-    </mvc:interceptors>-->
+    </mvc:interceptors>
+
+    <!--websocket处理类-->
+    <bean id="socketHandler" class="com.wechat.websocket.WebSocketPushHandler"></bean>
+    <!--配置拦截器-->
+    <websocket:handlers allowed-origins="*">
+        <websocket:mapping path="/websocket" handler="socketHandler"/><!-- 连接的URL -->
+        <websocket:handshake-interceptors>
+            <bean class="com.wechat.websocket.WebSocketInterceptor"/>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
 
     <!--上传文件-->
     <bean id="multipartResolver"

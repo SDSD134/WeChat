@@ -12,4 +12,10 @@ public interface PostMapper {
     Integer  countPostByUser (String userid);
 
     List<Post>  getAllPost();
+
+    Integer deletPostById(int id);
+
+    Integer addPostRead(int id);
+
+    Integer addPraiseById(int id);
 }

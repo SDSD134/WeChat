@@ -20,7 +20,6 @@ public class Pet {
     private String petBreed;
     private String petVaccine;
     private User user;
-
     public Integer getPetId() {
         return petId;
     }
@@ -50,7 +49,7 @@ public class Pet {
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        this.userId = userId == null ? null : userId.trim();
     }
 
     public String getPetTitle() {
@@ -58,16 +57,10 @@ public class Pet {
     }
 
     public void setPetTitle(String petTitle) {
-        this.petTitle = petTitle;
+        this.petTitle = petTitle == null ? null : petTitle.trim();
     }
 
-    public String getPetDesc() {
-        return petDesc;
-    }
 
-    public void setPetDesc(String petDesc) {
-        this.petDesc = petDesc;
-    }
 
     public Date getCreatetime() {
         return createtime;
@@ -90,8 +83,18 @@ public class Pet {
     }
 
     public void setPetCity(String petCity) {
-        this.petCity = petCity;
+        this.petCity = petCity == null ? null : petCity.trim();
     }
+
+    public String getPetDesc() {
+        return petDesc;
+    }
+
+    public void setPetDesc(String petDesc) {
+        this.petDesc = petDesc == null ? null : petDesc.trim();
+    }
+
+
 
     public String getWx() {
         return wx;

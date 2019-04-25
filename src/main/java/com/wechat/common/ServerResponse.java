@@ -86,6 +86,13 @@ public class ServerResponse<T> implements Serializable {
         return new ServerResponse<T>(errorCode,errorMessage);
     }
 
-
+    @Override
+    public String toString() {
+        return "{" +
+                "status=" + status +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }
 
