@@ -20,4 +20,6 @@ public interface PetMapper {
     int deletePet(Integer petId) throws Exception;
 
     int deletePetImage(Integer petId) throws Exception;
+
+    int updatePet(Pet pet) throws Exception;
 }

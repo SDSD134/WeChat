@@ -6,18 +6,58 @@ import java.util.Date;
 
 public class PetVo{
     private Integer petId;
-
     private String petType;
-
     private String petPrice;
-
     private String userId;
-
     private String petTitle;
-
-
     private String petCity;
+    private String petName;
+    private String petAge;
+    private String petGender;
+    private String petBreed;
+    private String petVaccine;
     private String mainImage;
+
+
+    public String getPetName() {
+        return petName;
+    }
+
+    public void setPetName(String petName) {
+        this.petName = petName;
+    }
+
+    public String getPetAge() {
+        return petAge;
+    }
+
+    public void setPetAge(String petAge) {
+        this.petAge = petAge;
+    }
+
+    public String getPetGender() {
+        return petGender;
+    }
+
+    public void setPetGender(String petGender) {
+        this.petGender = petGender;
+    }
+
+    public String getPetBreed() {
+        return petBreed;
+    }
+
+    public void setPetBreed(String petBreed) {
+        this.petBreed = petBreed;
+    }
+
+    public String getPetVaccine() {
+        return petVaccine;
+    }
+
+    public void setPetVaccine(String petVaccine) {
+        this.petVaccine = petVaccine;
+    }
 
     public Integer getPetId() {
         return petId;

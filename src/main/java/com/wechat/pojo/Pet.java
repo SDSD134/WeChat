@@ -14,31 +14,12 @@ public class Pet {
     private String petCity;
     private String wx;
     private String phone;
+    private String petName;
+    private String petAge;
+    private String petGender;
+    private String petBreed;
+    private String petVaccine;
     private User user;
-
-    public String getWx() {
-        return wx;
-    }
-
-    public void setWx(String wx) {
-        this.wx = wx;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Integer getPetId() {
         return petId;
@@ -61,7 +42,7 @@ public class Pet {
     }
 
     public void setPetPrice(String petPrice) {
-        this.petPrice = petPrice == null ? null : petPrice.trim();
+        this.petPrice = petPrice;
     }
 
     public String getUserId() {
@@ -69,7 +50,7 @@ public class Pet {
     }
 
     public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+        this.userId = userId;
     }
 
     public String getPetTitle() {
@@ -77,7 +58,15 @@ public class Pet {
     }
 
     public void setPetTitle(String petTitle) {
-        this.petTitle = petTitle == null ? null : petTitle.trim();
+        this.petTitle = petTitle;
+    }
+
+    public String getPetDesc() {
+        return petDesc;
+    }
+
+    public void setPetDesc(String petDesc) {
+        this.petDesc = petDesc;
     }
 
     public Date getCreatetime() {
@@ -104,11 +93,67 @@ public class Pet {
         this.petCity = petCity;
     }
 
-    public String getPetDesc() {
-        return petDesc;
+    public String getWx() {
+        return wx;
     }
 
-    public void setPetDesc(String petDesc) {
-        this.petDesc = petDesc;
+    public void setWx(String wx) {
+        this.wx = wx;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPetName() {
+        return petName;
+    }
+
+    public void setPetName(String petName) {
+        this.petName = petName;
+    }
+
+    public String getPetAge() {
+        return petAge;
+    }
+
+    public void setPetAge(String petAge) {
+        this.petAge = petAge;
+    }
+
+    public String getPetGender() {
+        return petGender;
+    }
+
+    public void setPetGender(String petGender) {
+        this.petGender = petGender;
+    }
+
+    public String getPetBreed() {
+        return petBreed;
+    }
+
+    public void setPetBreed(String petBreed) {
+        this.petBreed = petBreed;
+    }
+
+    public String getPetVaccine() {
+        return petVaccine;
+    }
+
+    public void setPetVaccine(String petVaccine) {
+        this.petVaccine = petVaccine;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

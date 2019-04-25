@@ -7,10 +7,15 @@
         <result property="petPrice" column="pet_price"/>
         <result property="petTitle" column="pet_title"/>
         <result property="petDesc" column="pet_desc"/>
-        <result property="creaetetime" column="createtime"/>
+        <result property="createtime" column="createtime"/>
         <result property="petCity" column="pet_city"/>
         <result property="wx" column="wx"/>
         <result property="phone" column="phone"/>
+        <result property="petName" column="pet_name"/>
+        <result property="petAge" column="pet_age"/>
+        <result property="petGender" column="pet_gender"/>
+        <result property="petBreed" column="pet_breed"/>
+        <result property="petVaccine" column="pet_vaccine"/>
         <association property="user" javaType="user">
             <id property="userId" column="user_id"/>
             <result property="avatarUrl" column="avatarUrl"/>
@@ -24,23 +29,28 @@
     </resultMap>
     <select id="findPetDetail" parameterType="Integer" resultMap="petDetail">
         select
-            p.pet_id petId,
-            p.pet_type petType,
-            p.pet_price petPrice,
-            p.pet_title petTitle,
-            p.pet_desc petDesc,
+            p.pet_id,
+            p.pet_type,
+            p.pet_price,
+            p.pet_title,
+            p.pet_desc,
             p.createtime,
-            p.pet_city petCity,
+            p.pet_city,
             p.wx,
             p.phone,
-            u.user_id userId,
+            p.pet_name,
+            p.pet_age,
+            p.pet_gender,
+            p.pet_breed,
+            p.pet_vaccine,
+            u.user_id,
             u.avatarUrl,
             u.gender,
             u.address,
-            pi.pet_image_id petImageId,
-            pi.pet_image_url petImageUrl
+            pi.pet_image_id,
+            pi.pet_image_url
         from pet p
-        left join user u on p.user_id = u.user_id
+        left join users u on p.user_id = u.user_id
         left join pet_image pi on p.pet_id = pi.pet_id
         where p.pet_id = #{petId}
     </select>
@@ -52,12 +62,19 @@
           p.user_id userId,
           p.pet_title petTitle,
           p.pet_city petCity,
+          p.pet_name petName,
+          p.pet_age petAge,
+          p.pet_gender petGender,
+          p.pet_breed petBreed,
+          p.pet_vaccine petVaccine,
           pi.pet_image_url mainImage
         from pet p
         left join pet_image pi on p.pet_id = pi.pet_id
         <where>
-            pi.pet_image_type = 1
-            and p.pet_type = #{petType}
+            pi.pet_image_type = '1'
+            <if test="pet_type != null">
+                and p.pet_type = #{petType}
+            </if>
             <if test="petTitle !=null">
               and p.pet_title like '%${petTitle}%'
             </if>
@@ -79,7 +96,13 @@
           `updatetime`,
           `pet_city`,
           `wx`,
-          `phone`
+          `phone`,
+          `pet_name`,
+          `pet_age`,
+          `pet_gender`,
+          `pet_breed`,
+          `pet_vaccine`
+
         )
         VALUES
           (
@@ -92,7 +115,12 @@
             now(),
            #{petCity},
             #{wx},
-            #{phone}
+            #{phone},
+            #{petName},
+            #{petAge},
+            #{petGender},
+            #{petBreed},
+            #{petVaccine}
       )
     </insert>
     <insert id="uploadImage" parameterType="petImage">
@@ -112,6 +140,58 @@
            now()
           )
     </insert>
+    <update id="updatePet" parameterType="pet">
+        UPDATE
+          `pet`
+        SET
+        <if test="petId != null">
+            `pet_id` =  #{petId},
+        </if>
+        <if test="petType != null">
+            `pet_type` = #{petType},
+        </if>
+        <if test="petPrice != null">
+            `pet_price` = #{petPrice},
+        </if>
+        <if test="userId != null">
+            `user_id` = #{userId},
+        </if>
+        <if test="petTile != null">
+            `pet_title` = #{petTile},
+        </if>
+        <if test="petDesc != null">
+            `pet_desc` = #{petDesc},
+        </if>
+        <if test="createtime != null">
+            `createtime` = #{createtime},
+        </if>
+        <if test="petCity != null">
+            `pet_city` = #{petCity},
+        </if>
+        <if test="wx != null">
+            `wx` = #{wx},
+        </if>
+        <if test="phone != null">
+            `phone` = #{phone},
+        </if>
+        <if test="petName != null">
+            `pet_name` = #{petName},
+        </if>
+        <if test="petAge != null">
+            `pet_age` = #{petAge},
+        </if>
+        <if test="petGender != null">
+            `pet_gender` = #{petGender},
+        </if>
+        <if test="petBreed != null">
+            `pet_breed` = #{petBreed},
+        </if>
+        <if test="petVaccine != null">
+            `pet_vaccine` = #{petVaccine},
+        </if>
+        `updatetime` = now()
+        WHERE `pet_id` = #{petId}
+    </update>
     <delete id="deletePet" parameterType="Integer">
         DELETE
         FROM
@@ -125,4 +205,5 @@
           pet_image
         WHERE pet_id = #{petId}
     </delete>
+
 </mapper>
