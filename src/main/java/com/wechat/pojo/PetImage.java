@@ -4,15 +4,10 @@ import java.util.Date;
 
 public class PetImage {
     private Integer petImageId;
-
     private String petImageType;
-
     private String petImageUrl;
-
     private Integer petId;
-
-    private Date creatime;
-
+    private Date createtime;
     private Date updatetime;
 
     public Integer getPetImageId() {
@@ -28,7 +23,7 @@ public class PetImage {
     }
 
     public void setPetImageType(String petImageType) {
-        this.petImageType = petImageType == null ? null : petImageType.trim();
+        this.petImageType = petImageType;
     }
 
     public String getPetImageUrl() {
@@ -36,7 +31,7 @@ public class PetImage {
     }
 
     public void setPetImageUrl(String petImageUrl) {
-        this.petImageUrl = petImageUrl == null ? null : petImageUrl.trim();
+        this.petImageUrl = petImageUrl;
     }
 
     public Integer getPetId() {
@@ -47,12 +42,12 @@ public class PetImage {
         this.petId = petId;
     }
 
-    public Date getCreatime() {
-        return creatime;
+    public Date getCreatetime() {
+        return createtime;
     }
 
-    public void setCreatime(Date creatime) {
-        this.creatime = creatime;
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
     public Date getUpdatetime() {
