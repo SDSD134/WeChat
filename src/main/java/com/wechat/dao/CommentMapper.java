@@ -1,4 +1,7 @@
 package com.wechat.dao;
 
-public class CommentMapper {
+import org.springframework.stereotype.Component;
+
+@Component
+public interface CommentMapper {
 }

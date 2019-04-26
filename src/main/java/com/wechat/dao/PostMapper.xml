@@ -27,9 +27,12 @@
     <delete id="deletPostById" parameterType="java.lang.Integer">
         DELETE from post where post_id=#{id}
     </delete>
-    <!--<update id="addPraiseById" parameterType="java.lang.Integer">
-        UPDATE post SET post_goodCount=post_goodCount+ 1 WHERE post_id = #{id};
-    </update>-->
+    <update id="addPraiseById" parameterType="java.lang.Integer">
+        UPDATE post SET post_goodCount=CAST (post_goodCount AS UNSIGNED) + 1 WHERE post_id = #{id};
+    </update>
+    <select id="isExist" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT  COUNT(*) from  post WHERE post_id = #{id}
+    </select>
 
 
 </mapper>

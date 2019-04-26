@@ -31,7 +31,7 @@ public class UserController {
         return response;
     }
 
-    @RequestMapping(value = "/getuserinfo")
+    @RequestMapping(value = "/getuser")
     @ResponseBody
     public ServerResponse<String> getuserinfo(String userInfo, @RequestHeader("userId") String userId){
         System.out.println(userInfo);
@@ -52,6 +52,17 @@ public class UserController {
             return ServerResponse.createByErrorMessage("获取参数失败");
         }*/
            return  userService.getUserById(userId,jsonObject);
+    }
+    @RequestMapping(value = "/getuserInfo")
+    @ResponseBody
+    public ServerResponse<String> getuserinfo(String iv,String encryptedData,  @RequestHeader("userId") String userId){
+
+        System.out.println(encryptedData);
+        System.out.println(iv);
+        if (encryptedData == null || iv == null) {
+            return ServerResponse.createByErrorMessage("获取参数失败");
+        }
+        return  userService.getUserById(userId,encryptedData,iv);
     }
 
 

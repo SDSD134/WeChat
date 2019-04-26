@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wechat.dao.CommentMapper">
-    <resultMap id="BaseResultMap" type="com.pet.pojo.Comment" >
+    <resultMap id="BaseResultMap" type="com.wechat.pojo.Comment" >
         <id column="comment_id" property="commentId" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="VARCHAR" />
         <result column="post_id" property="postId" jdbcType="INTEGER" />

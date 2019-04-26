@@ -42,25 +42,17 @@ public class PostController {
             return  ServerResponse.createByErrorMessage("参数错误");
         }
         int id = Integer.parseInt(postId);
-        return  postService.deletPostById(id);
+        return  postService.deletePostById(id);
     }
 
     //增加阅读数量,进行点赞
     @RequestMapping(value = "/addCountById/type")
     @ResponseBody
     public ServerResponse<String> addPostReadById(String postId,@PathVariable("type") String type){
-        //假设可以获取(userid已存在)
-        if (postId == null) {
-            return  ServerResponse.createByErrorMessage("参数错误");
-        }
-        int id = Integer.parseInt(postId);
-        if (type.equals("readCount")) {
-            return  postService.addPostRead(id);
-        }
-        if (type.equals("praisePost")) {
-            return postService.addPraiseById(id);
-        }
-        return ServerResponse.createByErrorMessage("参数错误");
+        Integer id = Integer.parseInt(postId);
+        if (id == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+       return postService.addPostReadOrPraise(id,type);
 
     }
 

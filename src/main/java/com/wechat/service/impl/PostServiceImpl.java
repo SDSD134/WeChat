@@ -42,7 +42,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ServerResponse<String> deletPostById(int id) {
+    public ServerResponse<String> deletePostById(int id) {
         Integer deletCount = postMapper.deletPostById(id);
         if (deletCount > 0) {
             return ServerResponse.createBySuccessMessage("删除成功");
@@ -52,23 +52,25 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ServerResponse<String> addPostRead(int id) {
-        Integer addCount = postMapper.addPostRead(id);
-        if (addCount > 0) {
+    public ServerResponse<String> addPostReadOrPraise(int id,String type) {
+        Integer isExist = postMapper.isExist(id);
+        if (!(isExist > 0))
+            return ServerResponse.createByErrorMessage("帖子不存在");
+        if (type.equals("readCount")) {
+            Integer addCount = postMapper.addPostRead(id);
+            if (addCount > 0)
             return ServerResponse.createBySuccessMessage("成功");
         }
-        return ServerResponse.createByErrorMessage("失败");
-
-    }
-
-    @Override
-    public ServerResponse<String> addPraiseById(int id) {
-        Integer addCount = postMapper.addPraiseById(id);
-        if (addCount > 0) {
-            return ServerResponse.createBySuccessMessage("成功");
+        if (type.equals("praisePost")) {
+            Integer addCount = postMapper.addPraiseById(id);
+            if (addCount > 0)
+                return ServerResponse.createBySuccessMessage("成功");
         }
-        return ServerResponse.createByErrorMessage("失败");
+        return ServerResponse.createByErrorMessage("种类参数错误");
     }
+
+
+
 
 
 }

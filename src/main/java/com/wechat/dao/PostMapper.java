@@ -18,4 +18,8 @@ public interface PostMapper {
     Integer addPostRead(int id);
 
     Integer addPraiseById(int id);
+
+    Integer isExist(int id);
+
+
 }

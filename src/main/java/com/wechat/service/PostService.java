@@ -11,9 +11,7 @@ public interface PostService {
 
     ServerResponse<List<Post>> getAllPost(int pageNum,int pageSize);
 
-    ServerResponse<String> deletPostById(int id);
+    ServerResponse<String> deletePostById(int id);
 
-    ServerResponse<String> addPostRead(int id);
-
-    ServerResponse<String> addPraiseById(int id);
+    ServerResponse<String> addPostReadOrPraise(int  id,String type);
 }
