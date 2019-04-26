@@ -46,6 +46,7 @@
             				LoginInterceptor的preHandler方法里面获取不拦截的请求uri地址了(优选) -->
             <mvc:exclude-mapping path="/user/login" />
             <mvc:exclude-mapping path="/websocket"/>
+            <mvc:exclude-mapping path="/backend/*"/>
             <bean class="com.wechat.controller.LoginInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

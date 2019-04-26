@@ -116,7 +116,8 @@ public class UserServiceImpl implements UserService {
             country = (String)userInfo.get("country");
         }
         String avatarUrl =(String) userInfo.get("avatarUrl");
-        JSONObject watermark = null;
+
+       /* JSONObject watermark = null;
         try {
             watermark = (JSONObject) userInfo.get("watermark");
             Long timestampLong = (long) watermark.get("timestamp");
@@ -129,7 +130,7 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
           // return ServerResponse.createByErrorMessage("授权错误");
-        }
+        }*/
         user.setAddress(city + province + country);
         user.setNickName(name);
         user.setAvatarUrl(avatarUrl);
