@@ -18,7 +18,7 @@ public class Pet {
     private String petAge;
     private String petGender;
     private String petBreed;
-    private String petVaccine;
+    private String isVaccine;
     private User user;
     public Integer getPetId() {
         return petId;
@@ -144,12 +144,12 @@ public class Pet {
         this.petBreed = petBreed;
     }
 
-    public String getPetVaccine() {
-        return petVaccine;
+    public String getIsVaccine() {
+        return isVaccine;
     }
 
-    public void setPetVaccine(String petVaccine) {
-        this.petVaccine = petVaccine;
+    public void setIsVaccine(String isVaccine) {
+        this.isVaccine = isVaccine;
     }
 
     public User getUser() {

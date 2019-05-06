@@ -1,11 +1,11 @@
-package com.wechat.vo;
+package com.wechat.pojo.vo;
 
 import com.wechat.pojo.Pet;
 import com.wechat.pojo.PetImage;
 
 import java.util.List;
 
-public class PetDetailVo extends Pet{
+public class PetDetailVO extends Pet{
 
     private List<PetImage> petImages;
 

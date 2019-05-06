@@ -1,10 +1,6 @@
-package com.wechat.vo;
+package com.wechat.pojo.vo;
 
-import com.wechat.pojo.Pet;
-
-import java.util.Date;
-
-public class PetVo{
+public class PetVO {
     private Integer petId;
     private String petType;
     private String petPrice;

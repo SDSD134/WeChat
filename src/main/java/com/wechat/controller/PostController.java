@@ -28,9 +28,10 @@ public class PostController {
     @RequestMapping(value = "/getAllPost")
     @ResponseBody
     public ServerResponse getAllPost(@RequestParam(value = "pageNum",defaultValue = "1")int pageNum,
-                                     @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+                                     @RequestParam(value = "pageSize",defaultValue = "5")int pageSize,
+                                     @RequestHeader  String userId){
         //假设可以获取(userid已存在)
-        return  postService.getAllPost(pageNum,pageSize);
+        return  postService.getAllPost(pageNum,pageSize,userId);
     }
 
     //删除所有帖子
@@ -45,14 +46,14 @@ public class PostController {
         return  postService.deletePostById(id);
     }
 
-    //增加阅读数量,进行点赞
+    //增加阅读数量,进行点赞，待改进
     @RequestMapping(value = "/addCountById/type")
     @ResponseBody
-    public ServerResponse<String> addPostReadById(String postId,@PathVariable("type") String type){
+    public ServerResponse<String> addPostReadById(String postId,@PathVariable("type") String type,@RequestHeader String userId){
         Integer id = Integer.parseInt(postId);
         if (id == null)
             return ServerResponse.createByErrorMessage("参数错误");
-       return postService.addPostReadOrPraise(id,type);
+       return postService.addPostReadOrPraise(id,type,userId);
 
     }
 

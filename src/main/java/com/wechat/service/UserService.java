@@ -15,5 +15,7 @@ public interface UserService {
     ServerResponse<String> getUserById (String userId,String encryptedData,String iv);
     ServerResponse<String> getUserById (String userId,JSONObject userInfo);
 
+    ServerResponse<String> saveAvtaUrl (String avatarUrl,String userId);
+
 
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wechat.dao.ReplyMapper">
+    <resultMap id="BaseResultMap" type="com.wechat.pojo.Reply">
+        <id column="reply_id" property="replyId"></id>
+        <result column="reply_context" property="replyContext"></result>
+        <result column="comment_id" property="commentId"></result>
+        <result column="user_id" property="userId"></result>
+        <result column="super_reply_id" property="superReplyId"></result>
+        <result column="super_reply_user_id" property="superReplyUserId"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="updatetime" property="updatetime"></result>
+        <association property="user" javaType="com.wechat.pojo.vo.UserVO">
+            <result column="avatarUrl" property="avatarUrl"></result>
+            <result column="nickName" property="nickName"></result>
+            <result column="superReplyUserName" property="superReplyUserName"></result>
+        </association>
+
+    </resultMap>
+
+    <insert id="insertReply" parameterType="com.wechat.pojo.Reply">
+        insert into reply
+        (reply_context,comment_id,user_id,super_reply_id,super_reply_user_id,createtime,updatetime) VALUES
+        (#{replyId},#{replyContext},#{commentId},#{userId},#{superReplyId},#{superReplyUserId},NOW(),NOW())
+    </insert>
+
+    <delete id="deleteReplyById" parameterType="java.lang.Integer">
+        DELETE  FROM  reply WHERE reply_id=#{replyId}
+    </delete>
+
+    <select id="listGetReply" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      SELECT
+      r.comment_id,
+      r.reply_context,
+      r.reply_id,
+      r.super_reply_id,
+      r.super_reply_user_id,
+      r.updatetime ,
+      r.createtime ,
+      r.user_id ,
+      u.avatarUrl,
+      u.nickName,
+      s.nickName as "superReplyUserName"
+       FROM reply AS r LEFT JOIN USER  u  ON r.user_id = u.user_id
+        LEFT JOIN USER s ON s.user_id = r.super_reply_user_id
+        WHERE r.comment_id=#{id} ORDER  BY  r.reply_id DESC
+
+    </select>
+
+</mapper>

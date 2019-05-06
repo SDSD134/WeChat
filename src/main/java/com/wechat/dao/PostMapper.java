@@ -1,17 +1,19 @@
 package com.wechat.dao;
 
+import com.wechat.pojo.GoodPost;
 import com.wechat.pojo.Post;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public interface PostMapper {
-    List<Post> getPostByUser(String userid);
+    List<Post> getPostByUser(String userId);
 
-    Integer  countPostByUser (String userid);
+    Integer  countPostByUser (String userId);
 
-    List<Post>  getAllPost();
+    List<Post>  getAllPost(String userId);
 
     Integer deletPostById(int id);
 
@@ -21,5 +23,12 @@ public interface PostMapper {
 
     Integer isExist(int id);
 
+    Integer addGoodPost(@Param("userId") String userId, @Param("postId")Integer postId);
 
+    Integer countGoodPost(@Param("userId") String userId, @Param("postId")Integer postId);
+
+
+    Integer deleteGoodPost(@Param("userId")String userId, @Param("postId")Integer postId);
+
+    Integer reducePraiseById(Integer id);
 }

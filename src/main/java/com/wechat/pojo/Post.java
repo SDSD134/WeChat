@@ -9,7 +9,7 @@ public class Post {
 
     private String postRead;
 
-    private String postGoodcount;
+    private String postGoodCount;
 
     private String userId;
 
@@ -17,9 +17,47 @@ public class Post {
 
     private String postType;
 
+    private String postContent;
+
+    private String postImage;
+
     private Date createTime;
 
     private Date updateTime;
+
+    private String isPraise;
+
+    public String getIsPraise() {
+        return isPraise;
+    }
+
+    public void setIsPraise(String isPraise) {
+        this.isPraise = isPraise;
+    }
+
+    public String getPostContent() {
+        return postContent;
+    }
+
+    public void setPostContent(String postContent) {
+        this.postContent = postContent;
+    }
+
+    public String getPostImage() {
+        return postImage;
+    }
+
+    public void setPostImage(String postImage) {
+        this.postImage = postImage;
+    }
+
+    public String getPostGoodCount() {
+        return postGoodCount;
+    }
+
+    public void setPostGoodCount(String postGoodCount) {
+        this.postGoodCount = postGoodCount;
+    }
 
     public Integer getPostId() {
         return postId;
@@ -45,12 +83,8 @@ public class Post {
         this.postRead = postRead;
     }
 
-    public String getPostGoodcount() {
-        return postGoodcount;
-    }
-
     public void setPostGoodcount(String postGoodcount) {
-        this.postGoodcount = postGoodcount;
+        this.postGoodCount = postGoodcount;
     }
 
     public String getUserId() {
@@ -91,5 +125,23 @@ public class Post {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", postTopic='" + postTopic + '\'' +
+                ", postRead='" + postRead + '\'' +
+                ", postGoodCount='" + postGoodCount + '\'' +
+                ", userId='" + userId + '\'' +
+                ", postReward='" + postReward + '\'' +
+                ", postType='" + postType + '\'' +
+                ", postContent='" + postContent + '\'' +
+                ", postImage='" + postImage + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", isPraise='" + isPraise + '\'' +
+                '}';
     }
 }

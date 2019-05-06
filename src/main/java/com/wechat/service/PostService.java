@@ -9,9 +9,9 @@ import java.util.List;
 public interface PostService {
     ServerResponse<List<Post>> getAllPostByUSer(String userid);
 
-    ServerResponse<List<Post>> getAllPost(int pageNum,int pageSize);
+    ServerResponse<List<Post>> getAllPost(int pageNum,int pageSize,String userId);
 
     ServerResponse<String> deletePostById(int id);
 
-    ServerResponse<String> addPostReadOrPraise(int  id,String type);
+    ServerResponse<String> addPostReadOrPraise(Integer  id,String type,String userId);
 }

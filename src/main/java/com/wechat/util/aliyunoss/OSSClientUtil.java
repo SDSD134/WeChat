@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.URL;
 import java.util.Date;
 import java.util.Random;
+
+import com.aliyun.oss.model.PutObjectRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.aliyun.oss.OSSClient;
@@ -118,18 +120,23 @@ public OSSClientUtil() {
    * @return 出错返回"" ,唯一MD5数字签名
    */
   public String uploadFile2OSS(InputStream instream, String fileName) {
-    String ret = "";
+   // String ret = "";
     try {
       //创建上传Object的Metadata 
       ObjectMetadata objectMetadata = new ObjectMetadata();
       objectMetadata.setContentLength(instream.available());
       objectMetadata.setCacheControl("no-cache");
       objectMetadata.setHeader("Pragma", "no-cache");
-      objectMetadata.setContentType(getcontentType(fileName.substring(fileName.lastIndexOf("."))));
+      try {
+        objectMetadata.setContentType(getcontentType(fileName.substring(fileName.lastIndexOf("."))));
+      }catch (Exception e) {
+        objectMetadata.setContentType("image/jpeg");
+      }
       objectMetadata.setContentDisposition("inline;filename=" + fileName);
       //上传文件
-      PutObjectResult putResult = ossClient.putObject(bucketName, filedir + fileName, instream, objectMetadata);
-      ret = putResult.getETag();
+     // PutObjectResult putResult = ossClient.putObject(bucketName, filedir + fileName, instream, objectMetadata);
+      ossClient.putObject(new PutObjectRequest(bucketName,filedir + fileName,instream));
+      //ret = putResult.getETag();
     } catch (IOException e) {
       log.error(e.getMessage(), e);
     } finally {
@@ -141,8 +148,11 @@ public OSSClientUtil() {
         e.printStackTrace();
       }
     }
-    return ret;
+    System.out.println(fileName);
+    return "https://" + this.bucketName+"."+this.endpoint+ "//" + filedir+fileName;
   }
+
+
  
   /**
    * Description: 判断OSS服务文件上传时文件的contentType
