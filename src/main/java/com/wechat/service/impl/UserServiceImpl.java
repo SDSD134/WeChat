@@ -125,9 +125,9 @@ public class UserServiceImpl implements UserService {
            // String fileName = avatarUrl.substring(avatarUrl.lastIndexOf("."));
             String fileName = userId ;
             DownLoad downLoad = new DownLoad();
-            InputStream stream = downLoad.getImageStream(avatarUrl);
 
             for (int i = 0; i<3; i++){
+                InputStream stream = downLoad.getImageStream(avatarUrl);
                 if (stream != null){
                     util = new OSSClientUtil();
                     try {

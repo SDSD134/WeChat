@@ -39,15 +39,25 @@ public class WebSocketPushHandler implements WebSocketHandler {
             System.out.println(userId + "用户未连接建立连接成功");
         }
         System.out.println(userId + "用户已经连接");
-        //用户来连接后查看是否有没有接受的消息
         Jedis jedis = RedisUtil.getJedis();
-        Long count = jedis.llen(userId);
-        if (count == null || count == 0) {
-            sendMessageToUser(userId,new TextMessage("连接成功"));
+        try {
+            //用户来连接后查看是否有没有接受的消息
+            Long count = jedis.llen(userId);
+            if (count > 0) {
+                List<String> list = jedis.lrange(userId,0,-1);
+                jedis.del(userId);
+                sendMessageToUser(userId,new TextMessage(list.toString()));
             return;
+            }
+            sendMessageToUser(userId,new TextMessage("连接成功"));
+        } catch (Exception e) {
+
         }
-        List<String> list = jedis.lrange(userId,0,-1);
-        sendMessageToUser(userId,new TextMessage(list.toString()));
+        finally {
+            jedis.close();
+        }
+
+
 
     }
 
@@ -73,9 +83,8 @@ public class WebSocketPushHandler implements WebSocketHandler {
         String fromUser = (String) json.get("fromUser");
         String toUser = (String) json.get("toUser");
         //判断数据库中是否有该用户
-        Integer from = userMapper.countUserById(fromUser);
         Integer to = userMapper.countUserById(toUser);
-        if (fromUser == null || toUser == null || !(from > 0) || !(to > 0)) {
+        if (fromUser == null || toUser == null || !(to > 0)) {
             sendMessageToUser(webSocketSession,new TextMessage(ServerResponse.createByErrorMessage("不存在该用户").toString()));
             return;
         }
@@ -85,18 +94,32 @@ public class WebSocketPushHandler implements WebSocketHandler {
         wsMessage.setToUser(toUser);
         wsMessage.setMessage(message);
         wsMessage.setMessageType(messageType);
+        WSMessage wsMessageInfo = userMapper.getWsMessage(wsMessage.getFromUser(),wsMessage.getToUser());
+        if (wsMessage != null) {
+            wsMessage.setFromUserImg(wsMessageInfo.getFromUserImg());
+            wsMessage.setFromUserName(wsMessageInfo.getFromUserName());
+            wsMessage.setToUserImg(wsMessageInfo.getToUserImg());
+            wsMessage.setToUsername(wsMessageInfo.getToUsername());
+        }
+        System.out.println(wsMessage);
         //映射错误，失败
-        if (wsMessage == null) {
+        if (wsMessage.getFromUser() == null && wsMessageInfo == null) {
             sendMessageToUser(webSocketSession,new TextMessage(ServerResponse.createByErrorMessage("传输失败").toString()));
             return;
         }
+
         //成员不在线上则把信息存入redis,等待发送
         if (isOpen(toUser) == null) {
+            Jedis jedis = RedisUtil.getJedis();
+            if (jedis == null) {
+                sendMessageToUser(webSocketSession,new TextMessage(ServerResponse.createByErrorMessage("传输失败").toString()));
+                return;
+            }
             try {
-                Jedis jedis = RedisUtil.getJedis();
                 jedis.lpush(toUser,wsMessage.toString());
                 jedis.close();
             } catch (Exception e){
+                jedis.close();
                 sendMessageToUser(webSocketSession,new TextMessage(ServerResponse.createByErrorMessage("发送失败").toString()));
                 return ;
             }
@@ -179,7 +202,7 @@ public class WebSocketPushHandler implements WebSocketHandler {
             }
         }*/
        WebSocketSession socketSession = isOpen(userId);
-        if (socketSession == null) {
+        if (socketSession != null) {
             try {
                 socketSession.sendMessage(message);
             } catch (IOException e) {

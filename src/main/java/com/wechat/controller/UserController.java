@@ -36,6 +36,9 @@ public class UserController {
     @ResponseBody
     public ServerResponse<String> getuserinfo(String userInfo, @RequestHeader("userId") String userId){
         System.out.println(userInfo);
+        if (userInfo == null) {
+            return ServerResponse.createByErrorMessage("参数错误");
+        }
         JSONObject jsonObject = null;
         try {
            jsonObject = (JSONObject) (new JSONParser().parse(userInfo));
@@ -47,6 +50,7 @@ public class UserController {
             e.printStackTrace();
             return ServerResponse.createByErrorMessage("参数错误");
         }
+
        /* System.out.println(encryptedData);
         System.out.println(iv);
         if (encryptedData == null || iv == null) {

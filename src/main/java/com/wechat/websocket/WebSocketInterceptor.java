@@ -1,8 +1,10 @@
 package com.wechat.websocket;
 
+import com.wechat.dao.UserMapper;
 import com.wechat.pojo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -17,7 +19,8 @@ import java.util.Map;
 //WebSocket握手请求的拦截器. 检查握手请求和响应, 对WebSocketHandler传递属性
 //创建握手
 public class WebSocketInterceptor implements HandshakeInterceptor {
-
+    @Autowired
+    private UserMapper userMapper;
     //在握手之前执行该方法, 继续握手返回true, 中断握手返回false.
      //       通过attributes参数设置WebSocketSession的属性
     @Override
@@ -33,15 +36,21 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
                 User user = (User) session.getAttribute("userid");
                 map.put(String.valueOf(user.getUserId()),user);
             }*/
-            if (userid == null || userid.equals("")){
+            if (userid == null || userid.equals("") ){
                 userid="10";
-               // return false;
+                // return false;
             }
+          Integer count = userMapper.countUserById(userid);
+            if (!(count > 0) ) {
+                return false;
+            }
+
+
+
             map.put("userId",userid); //为服务器创建WebSocketSession做准备
         }
 
         System.out.println("连接到我了");
-
 
         return true;
 

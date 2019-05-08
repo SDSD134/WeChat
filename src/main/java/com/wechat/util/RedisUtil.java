@@ -7,12 +7,9 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 public class RedisUtil {
-    private static  String HOST = "192.168.241.100";
+    private static  String HOST = "39.104.141.30";
     private  static  Integer PORT =6379;
-    private static String AUTH="123456";
-    private  static String addr;
-    private static Integer port;
-    private static  String auth;
+    private static String AUTH="1234";
     private static final int MAX_TOTAL = 8;  //最大连接数
     private static final int MIN_IDLE = 0;  //最小空闲连接数
     private static final int MAX_IDLE = 8;  //最大空闲连接数
