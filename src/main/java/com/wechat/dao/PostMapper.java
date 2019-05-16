@@ -13,11 +13,11 @@ public interface PostMapper {
 
     Integer  countPostByUser (String userId);
 
-    List<Post>  getAllPost(String userId);
+    List<Post>  getAllPost();
 
     Integer deletPostById(int id);
 
-    Integer addPostRead(int id);
+    Integer updatePostRead(int id);
 
     Integer addPraiseById(int id);
 
@@ -27,8 +27,11 @@ public interface PostMapper {
 
     Integer countGoodPost(@Param("userId") String userId, @Param("postId")Integer postId);
 
-
     Integer deleteGoodPost(@Param("userId")String userId, @Param("postId")Integer postId);
 
     Integer reducePraiseById(Integer id);
+
+    Integer addPostById(Post post);
+
+    Integer addImageByPost(@Param("postId") Integer postId,@Param("imageUrl")String imageUrl);
 }

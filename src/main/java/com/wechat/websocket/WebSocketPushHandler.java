@@ -92,6 +92,7 @@ public class WebSocketPushHandler implements WebSocketHandler {
         String messageType = (String) json.get("messageType");
         wsMessage.setFromUser(fromUser);
         wsMessage.setToUser(toUser);
+        String sessioId = fromUser + toUser;
         wsMessage.setMessage(message);
         wsMessage.setMessageType(messageType);
         WSMessage wsMessageInfo = userMapper.getWsMessage(wsMessage.getFromUser(),wsMessage.getToUser());
@@ -107,27 +108,31 @@ public class WebSocketPushHandler implements WebSocketHandler {
             sendMessageToUser(webSocketSession,new TextMessage(ServerResponse.createByErrorMessage("传输失败").toString()));
             return;
         }
-
+        Jedis jedis = RedisUtil.getJedis();
         //成员不在线上则把信息存入redis,等待发送
         if (isOpen(toUser) == null) {
-            Jedis jedis = RedisUtil.getJedis();
             if (jedis == null) {
                 sendMessageToUser(webSocketSession,new TextMessage(ServerResponse.createByErrorMessage("传输失败").toString()));
                 return;
             }
             try {
                 jedis.lpush(toUser,wsMessage.toString());
-                jedis.close();
+                jedis.lpush(sessioId,wsMessage.toString());
             } catch (Exception e){
                 jedis.close();
                 sendMessageToUser(webSocketSession,new TextMessage(ServerResponse.createByErrorMessage("发送失败").toString()));
                 return ;
             }
+
             sendMessageToUser(webSocketSession,new TextMessage(ServerResponse.createByErrorMessage("该用户不在线").toString()));
             return;
         }
+        jedis.lpush(sessioId,wsMessage.toString());
+        jedis.close();
+
+
         //成员在线上且发送成功
-       sendMessagesToUsers(new TextMessage(ServerResponse.createBySuccess("传输成功",wsMessage).toString()));
+        sendMessageToUser(userMap.get(wsMessage.getToUser()),new TextMessage(ServerResponse.createBySuccess("传输成功",wsMessage).toString()));
         System.out.println("已发送");
 
 

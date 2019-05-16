@@ -12,7 +12,7 @@ public interface CommentService {
 
     ServerResponse deleteReplyById(String replyId,String commentId);
 
-    ServerResponse listCommentByPost(Comment comment);
+    ServerResponse listCommentByPost(String postId);
 
     ServerResponse getCommentReply(Comment comment);
 }

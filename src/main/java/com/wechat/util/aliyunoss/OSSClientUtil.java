@@ -4,8 +4,6 @@ import java.io.*;
 import java.net.URL;
 import java.util.Date;
 import java.util.Random;
-
-import com.aliyun.oss.model.PutObjectRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.aliyun.oss.OSSClient;
@@ -16,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
- 
+
 /**
  * 阿里云 OSS文件类
  *
@@ -26,48 +24,40 @@ import org.springframework.web.multipart.MultipartFile;
 public class OSSClientUtil {
 
   Log log = LogFactory.getLog(OSSClientUtil.class);
-  	private String endpoint = "oss-cn-beijing.aliyuncs.com";
-  	private String accessKeyId = "LTAIPFxYW3ZKWbpv";
-  	private String accessKeySecret = "IJTtkbRa2pIrfIttuefmfEISbs3IS4";
-  	private String bucketName = "pzduploadimage";
+  private String endpoint = "http://oss-cn-beijing.aliyuncs.com";//您的endpoint
+  private String accessKeyId = "LTAIPFxYW3ZKWbpv";//您的accessKeyId
+  private String accessKeySecret = "IJTtkbRa2pIrfIttuefmfEISbs3IS4";//您的accessKeySecret
+  //空间
+  private String bucketName = "pzduploadimage";
   //文件存储目录
-    private String filedir = "image/";
- 
-    private OSSClient ossClient;
- 
-    public OSSClient getOssClient() {
-	return ossClient;
-}
+  private String filedir = "image/";
 
-public void setOssClient(OSSClient ossClient) {
-	this.ossClient = ossClient;
-}
+  private OSSClient ossClient;
 
-public OSSClientUtil() {
+  public OSSClientUtil() {
     ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
   }
- 
+
   /**
    * 初始化
    */
   public void init() {
     ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
   }
- 
+
   /**
    * 销毁
    */
   public void destory() {
     ossClient.shutdown();
   }
- 
+
   /**
    * 上传图片
    *
    * @param url
- * @throws Exception 
    */
-  public void uploadImg2Oss(String url) throws Exception {
+  public void uploadImg2Oss(String url) throws Exception{
     File fileOnServer = new File(url);
     FileInputStream fin;
     try {
@@ -91,14 +81,13 @@ public OSSClientUtil() {
     try {
       InputStream inputStream = file.getInputStream();
       this.uploadFile2OSS(inputStream, name);
-      return "https://" + this.bucketName+"."+this.endpoint+ "//" + filedir+name;
-     
+      return name;
     } catch (Exception e) {
       throw new Exception("图片上传失败");
     }
   }
 
-	  /**
+  /**
    * 获得图片路径
    *
    * @param fileUrl
@@ -111,7 +100,7 @@ public OSSClientUtil() {
     }
     return null;
   }
- 
+
   /**
    * 上传到OSS服务器  如果同名文件会覆盖服务器上的
    *
@@ -120,23 +109,18 @@ public OSSClientUtil() {
    * @return 出错返回"" ,唯一MD5数字签名
    */
   public String uploadFile2OSS(InputStream instream, String fileName) {
-   // String ret = "";
+    String ret = "";
     try {
-      //创建上传Object的Metadata 
+      //创建上传Object的Metadata
       ObjectMetadata objectMetadata = new ObjectMetadata();
       objectMetadata.setContentLength(instream.available());
       objectMetadata.setCacheControl("no-cache");
       objectMetadata.setHeader("Pragma", "no-cache");
-      try {
-        objectMetadata.setContentType(getcontentType(fileName.substring(fileName.lastIndexOf("."))));
-      }catch (Exception e) {
-        objectMetadata.setContentType("image/jpeg");
-      }
+      objectMetadata.setContentType(getcontentType(fileName.substring(fileName.lastIndexOf("."))));
       objectMetadata.setContentDisposition("inline;filename=" + fileName);
       //上传文件
-     // PutObjectResult putResult = ossClient.putObject(bucketName, filedir + fileName, instream, objectMetadata);
-      ossClient.putObject(new PutObjectRequest(bucketName,filedir + fileName,instream));
-      //ret = putResult.getETag();
+      PutObjectResult putResult = ossClient.putObject(bucketName, filedir + fileName, instream, objectMetadata);
+      ret = putResult.getETag();
     } catch (IOException e) {
       log.error(e.getMessage(), e);
     } finally {
@@ -148,12 +132,9 @@ public OSSClientUtil() {
         e.printStackTrace();
       }
     }
-    System.out.println(fileName);
-    return "https://" + this.bucketName+"."+this.endpoint+ "//" + filedir+fileName;
+    return ret;
   }
 
-
- 
   /**
    * Description: 判断OSS服务文件上传时文件的contentType
    *
@@ -168,8 +149,8 @@ public OSSClientUtil() {
       return "image/gif";
     }
     if (FilenameExtension.equalsIgnoreCase(".jpeg") ||
-        FilenameExtension.equalsIgnoreCase(".jpg") ||
-        FilenameExtension.equalsIgnoreCase(".png")) {
+            FilenameExtension.equalsIgnoreCase(".jpg") ||
+            FilenameExtension.equalsIgnoreCase(".png")) {
       return "image/jpeg";
     }
     if (FilenameExtension.equalsIgnoreCase(".html")) {
@@ -182,11 +163,11 @@ public OSSClientUtil() {
       return "application/vnd.visio";
     }
     if (FilenameExtension.equalsIgnoreCase(".pptx") ||
-        FilenameExtension.equalsIgnoreCase(".ppt")) {
+            FilenameExtension.equalsIgnoreCase(".ppt")) {
       return "application/vnd.ms-powerpoint";
     }
     if (FilenameExtension.equalsIgnoreCase(".docx") ||
-        FilenameExtension.equalsIgnoreCase(".doc")) {
+            FilenameExtension.equalsIgnoreCase(".doc")) {
       return "application/msword";
     }
     if (FilenameExtension.equalsIgnoreCase(".xml")) {
@@ -194,7 +175,7 @@ public OSSClientUtil() {
     }
     return "image/jpeg";
   }
- 
+
   /**
    * 获得url链接
    *

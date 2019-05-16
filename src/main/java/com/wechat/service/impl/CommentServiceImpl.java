@@ -24,7 +24,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public ServerResponse<String> commentPost(Comment comment) {
         Integer insert = commentMapper.insertCommentPost(comment);
-        if (insert > 0)
+        Integer add = commentMapper.updatePostReward(comment.getPostId());
+        if (insert > 0 && add >0)
             return ServerResponse.createBySuccessMessage("评论成功");
 
         return ServerResponse.createByErrorMessage("参数错误");
@@ -45,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         if (insert > 0 && update > 0 ) {
-            ServerResponse.createBySuccessMessage("评论成功");
+           return ServerResponse.createBySuccessMessage("评论成功");
         }
         return ServerResponse.createBySuccessMessage("评论失败");
     }
@@ -73,8 +74,8 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public ServerResponse listCommentByPost(Comment comment) {
-        List<Comment> list = commentMapper.listCommentByPost(comment.getPostId());
+    public ServerResponse listCommentByPost(String postId) {
+        List<Comment> list = commentMapper.listCommentByPost(postId);
         if (list == null) {
             return ServerResponse.createByErrorMessage("该帖子没有评论");
         }
@@ -90,7 +91,6 @@ public class CommentServiceImpl implements CommentService {
            }
 
        }
-
        comment.setReply(replies);
         return ServerResponse.createBySuccess(comment);
     }

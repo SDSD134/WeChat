@@ -1,12 +1,12 @@
 package com.wechat.service;
 
 
-import com.wechat.common.ServerResponse;
-import com.wechat.pojo.Post;
-import com.wechat.pojo.User;
-import org.json.simple.JSONObject;
+        import com.wechat.common.ServerResponse;
+        import com.wechat.pojo.Post;
+        import com.wechat.pojo.User;
+        import org.json.simple.JSONObject;
 
-import java.util.List;
+        import java.util.List;
 
 public interface UserService {
 
@@ -16,6 +16,7 @@ public interface UserService {
     ServerResponse<String> getUserById (String userId,JSONObject userInfo);
 
     ServerResponse<String> saveAvtaUrl (String avatarUrl,String userId);
+    ServerResponse communicateBySeesion(String sessionId,String start,String stop );
 
 
 }

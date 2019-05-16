@@ -80,6 +80,17 @@ public class UserController {
         //return null;
     }
 
+    @RequestMapping(value = "communicateBySeesion")
+    @ResponseBody
+    public ServerResponse communicateBySeesion(String sessionId,String start,String end) {
+        if (sessionId == null || start == null || end == null) {
+            return ServerResponse.createByErrorMessage("没有此对话");
+        }
+
+        return userService.communicateBySeesion(sessionId,start,end);
+
+    }
+
 
 
 }

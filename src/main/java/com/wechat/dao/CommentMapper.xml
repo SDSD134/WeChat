@@ -82,6 +82,9 @@
     <update id="updateReduceComment"  parameterType="java.lang.Integer">
         UPDATE comment SET count_comment=CAST (count_comment AS UNSIGNED) - 1 WHERE comment_id = #{commentId};
     </update>
+    <update id="updatePostReward"  parameterType="java.lang.Integer">
+        UPDATE post SET count_comment=CAST (count_comment AS UNSIGNED) - 1 WHERE comment_id = #{commentId};
+    </update>
 
 
 </mapper>

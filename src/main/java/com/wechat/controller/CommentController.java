@@ -57,16 +57,16 @@ public class CommentController {
         return commentService.deleteReplyById(replyId,commentId);
     }
 
-    //通过用户获取评论
+    /*//通过帖子获取评论
     @RequestMapping("/listCommentByPost")
     @ResponseBody
-    public ServerResponse listCommentByPost(Comment comment){
-        if (comment.getPostId() == null) {
+    public ServerResponse listCommentByPost(String postId){
+        if (postId == null) {
             return ServerResponse.createByErrorMessage("用户参数错误");
         }
-        return commentService.listCommentByPost(comment);
+        return commentService.listCommentByPost(postId);
 
-    }
+    }*/
 
     @RequestMapping("/getCommentReply")
     @ResponseBody

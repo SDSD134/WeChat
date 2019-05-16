@@ -12,6 +12,7 @@ import com.wechat.service.UserService;
 import com.wechat.util.DownLoad;
 import com.wechat.util.HttpURLConnection;
 
+import com.wechat.util.RedisUtil;
 import com.wechat.util.aliyunoss.OSSClientUtil;
 import com.wechat.util.encryptedDataUtil;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
+import redis.clients.jedis.Jedis;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -207,6 +209,19 @@ public class UserServiceImpl implements UserService {
         finally {
             util.destory();
         }
+    }
+
+    @Override
+    public ServerResponse communicateBySeesion(String sessionId,String start ,String stop) {
+        Jedis jedis = RedisUtil.getJedis();
+        boolean isExits = jedis.exists(sessionId);
+        if (!isExits) {
+            return ServerResponse.createByErrorMessage("此对话没有消息");
+        }
+        List<String> list = jedis.lrange(sessionId,Integer.parseInt(start),Integer.parseInt(stop));
+        jedis.close();
+        return ServerResponse.createBySuccess(list);
+
     }
 
 

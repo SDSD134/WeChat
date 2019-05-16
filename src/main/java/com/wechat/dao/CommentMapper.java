@@ -13,7 +13,7 @@ public interface CommentMapper {
     Integer insertCommentPost(Comment comment);
 
     //获取帖子的一级评论
-    List<Comment> listCommentByPost(Integer postId);
+    List<Comment> listCommentByPost(String postId);
 
     //获取一级评论的评论
     Comment getCommentReply(Integer commentId);
@@ -26,4 +26,6 @@ public interface CommentMapper {
 
     //减少评论数量
     Integer updateReduceComment(Integer commentId);
+
+    Integer updatePostReward(Integer postId);
 }

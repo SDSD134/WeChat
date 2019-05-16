@@ -22,7 +22,7 @@
     <select id="countPostByUser" parameterType="java.lang.String" resultType="java.lang.Integer">
         SELECT  COUNT(*) from  post WHERE user_id=#{userId}
     </select>
-    <select id="getAllPost"  parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="getAllPost"  resultMap="BaseResultMap">
       SELECT
       p.post_id postId,
       p.post_read postRead,
@@ -38,7 +38,8 @@
       g.post_id isPraise
       FROM  post AS p
       LEFT JOIN good_post AS g ON g.post_id = p.post_id
-      AND g.user_id=#{userId}
+      order by p.post_id DESC
+      /*AND g.user_id=#{userId}*/
     </select>
     <delete id="deletPostById" parameterType="java.lang.Integer">
         DELETE from post where post_id=#{id}
@@ -66,11 +67,18 @@
         DELETE FROM good_post where user_id= #{userId} and post_id = #{postId}
     </delete>
 
+    <insert id="addPostById" parameterType="com.wechat.pojo.Post" useGeneratedKeys="true" keyProperty="postId" keyColumn="post_id" >
+    INSERT into post (post_content,user_id,post_type,createtime,updatetime)
+    values (#{postContent},#{userId},#{postContent},NOW(),NOW())
+  </insert>
+    <insert id="addImageByPost" parameterType="map">
+        INSERT into post_image(post_image_url,post_id,createtime,updatetime)
+        VALUES (#{imageUrl},#{postId},NOW(),NOW())
+    </insert>
 
-
-
-
-
+    <update id="updatePostRead" parameterType="java.lang.Integer">
+     UPDATE post SET post_read=post_read + 1 WHERE post_id =  #{id};
+    </update>
 
 
 </mapper>

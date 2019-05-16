@@ -19,9 +19,9 @@ public class Post {
 
     private String postContent;
 
-    private String postImage;
-
     private Date createTime;
+
+    private String postImage;
 
     private Date updateTime;
 
