@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wechat.dao.PetMapper">
-    <resultMap id="petDetail" type="petDetailVo">
+    <resultMap id="petDetail" type="petDetailVO">
         <id property="petId" column="pet_id"/>
         <result property="petType" column="pet_type"/>
         <result property="petPrice" column="pet_price"/>
@@ -15,7 +15,7 @@
         <result property="petAge" column="pet_age"/>
         <result property="petGender" column="pet_gender"/>
         <result property="petBreed" column="pet_breed"/>
-        <result property="petVaccine" column="pet_vaccine"/>
+        <result property="isVaccine" column="is_vaccine"/>
         <association property="user" javaType="user">
             <id property="userId" column="user_id"/>
             <result property="avatarUrl" column="avatarUrl"/>
@@ -27,7 +27,7 @@
             <result property="petImageUrl" column="pet_image_url"/>
         </collection>
     </resultMap>
-    <select id="findPetDetail" parameterType="Integer" resultMap="petDetail">
+    <select id="getPetDetail" parameterType="Integer" resultMap="petDetail">
         select
             p.pet_id,
             p.pet_type,
@@ -42,7 +42,7 @@
             p.pet_age,
             p.pet_gender,
             p.pet_breed,
-            p.pet_vaccine,
+            p.is_vaccine,
             u.user_id,
             u.avatarUrl,
             u.gender,
@@ -50,11 +50,11 @@
             pi.pet_image_id,
             pi.pet_image_url
         from pet p
-        left join users u on p.user_id = u.user_id
+        left join user u on p.user_id = u.user_id
         left join pet_image pi on p.pet_id = pi.pet_id
         where p.pet_id = #{petId}
     </select>
-    <select id="selectAllPet" parameterType="pet" resultType="petVo">
+    <select id="listAllPet" parameterType="pet" resultType="petVO">
         select
           p.pet_id petId,
           p.pet_type petType,
@@ -66,7 +66,7 @@
           p.pet_age petAge,
           p.pet_gender petGender,
           p.pet_breed petBreed,
-          p.pet_vaccine petVaccine,
+          p.is_vaccine isVaccine,
           pi.pet_image_url mainImage
         from pet p
         left join pet_image pi on p.pet_id = pi.pet_id
@@ -85,7 +85,7 @@
         order by pet_id desc
     </select>
 
-    <insert id="publish" parameterType="pet">
+    <insert id="savePet" parameterType="pet">
         INSERT INTO `pet` (
           `pet_type`,
           `pet_price`,
@@ -101,8 +101,7 @@
           `pet_age`,
           `pet_gender`,
           `pet_breed`,
-          `pet_vaccine`
-
+          `is_vaccine`
         )
         VALUES
           (
@@ -120,7 +119,7 @@
             #{petAge},
             #{petGender},
             #{petBreed},
-            #{petVaccine}
+            #{isVaccine}
       )
     </insert>
     <insert id="uploadImage" parameterType="petImage">
@@ -162,9 +161,6 @@
         <if test="petDesc != null">
             `pet_desc` = #{petDesc},
         </if>
-        <if test="createtime != null">
-            `createtime` = #{createtime},
-        </if>
         <if test="petCity != null">
             `pet_city` = #{petCity},
         </if>
@@ -186,8 +182,8 @@
         <if test="petBreed != null">
             `pet_breed` = #{petBreed},
         </if>
-        <if test="petVaccine != null">
-            `pet_vaccine` = #{petVaccine},
+        <if test="isVaccine != null">
+            `is_vaccine` = #{isVaccine},
         </if>
         `updatetime` = now()
         WHERE `pet_id` = #{petId}

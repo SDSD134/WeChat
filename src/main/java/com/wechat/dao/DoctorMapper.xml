@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wechat.dao.DoctorMapper">
+
+    <select id="listDoctorApplication" resultType="doctor">
+        SELECT
+          `doctor_id`,
+          `user_id`,
+          `doctor_work_image`,
+          `doctor_desc`,
+          `creatime`,
+          `updatetime`,
+          `status`
+        FROM
+          `doctor`
+    </select>
+    <update id="updateDoctor" parameterType="doctor">
+        UPDATE
+          `doctor`
+        SET
+        <if test="doctorId != null">
+            `doctor_id` = #{doctorId},
+        </if>
+        <if test="userId != null">
+            `user_id` = #{userId},
+        </if>
+        <if test="doctorDesc != null">
+            `doctor_desc` = #{doctorDesc},
+        </if>
+        <if test="status != null">
+            `status` = #{status},
+        </if>
+            `updatetime` = now()
+        WHERE doctor_id = #{doctorId}
+    </update>
+    <delete id="deleteDoctor" parameterType="Integer">
+        DELETE
+        FROM
+          `doctor`
+        WHERE `doctor_id` = #{doctorId}
+    </delete>
+    <resultMap id="doctor_user_map" type="doctor">
+        <id column="doctor_id" property="doctorId"/>
+        <result column="doctor_desc" property="doctorDesc"/>
+        <association property="user" javaType="user">
+            <id column="user_id" property="userId"/>
+            <result column="nickName" property="nickName"/>
+            <result column="gender" property="gender"/>
+            <result column="address" property="address"/>
+        </association>
+    </resultMap>
+    <select id="listDoctor" resultMap="doctor_user_map">
+        SELECT
+          d.doctor_id,
+          d.doctor_desc,
+          u.user_id,
+          u.nickName,
+          u.gender,
+          u.address
+        FROM
+          doctor d
+        left join user u on d.user_id = u.user_id
+        where d.status = '1';
+    </select>
+</mapper>

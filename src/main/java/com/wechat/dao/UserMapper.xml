@@ -57,4 +57,27 @@
         </set>
         where user_id = #{userId,jdbcType=VARCHAR}
     </update>
+    <insert id="applyToDoctor" parameterType="doctor">
+        INSERT INTO `doctor` (
+          `user_id`,
+          `doctor_work_image`,
+          `doctor_desc`,
+          `creatime`,
+          `updatetime`
+        )
+        VALUES
+          (
+           #{userId},
+            #{doctorWorkImage},
+            #{doctorDesc},
+            now(),
+            now()
+          )
+    </insert>
+    <select id="checkUsername" parameterType="string">
+        select count(1) from user where nickName = #{username}
+    </select>
+    <select id="selectLogin" resultType="user">
+        select * from user where nickName = #{username} and openid = #{password}
+    </select>
 </mapper>

@@ -2,18 +2,18 @@ package com.wechat.dao;
 
 import com.wechat.pojo.Pet;
 import com.wechat.pojo.PetImage;
-import com.wechat.vo.PetDetailVo;
-import com.wechat.vo.PetVo;
+import com.wechat.pojo.vo.PetDetailVO;
+import com.wechat.pojo.vo.PetVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface PetMapper {
-    List<PetVo> selectAllPet(Pet pet) throws Exception;
+    List<PetVO> listAllPet(Pet pet) throws Exception;
 
-    PetDetailVo findPetDetail(@Param("petId") Integer petId) throws Exception;
+    PetDetailVO getPetDetail(@Param("petId") Integer petId) throws Exception;
 
-    int publish(Pet pet) throws Exception;
+    int savePet(Pet pet) throws Exception;
 
     int uploadImage(PetImage petImage) throws Exception;
 

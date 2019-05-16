@@ -5,19 +5,22 @@ import com.wechat.common.ServerResponse;
 
 import com.wechat.dao.PostMapper;
 import com.wechat.dao.UserMapper;
-import com.wechat.pojo.Post;
+import com.wechat.pojo.Doctor;
 import com.wechat.pojo.User;
 import com.wechat.service.UserService;
 import com.wechat.util.HttpURLConnection;
 
+import com.wechat.util.aliyunoss.OSSClientUtil;
 import com.wechat.util.encryptedDataUtil;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -43,7 +46,7 @@ public class UserServiceImpl implements UserService {
                 "&grant_type=authorization_code";
         String result = HttpURLConnection.sendGet(LOGIN_URL,params);
         JSONObject json = null;
-        String session_key=null;
+        String session_key = null;
         String openid = null;
         User user = new User();
         System.out.println("进入");
@@ -146,6 +149,45 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ServerResponse<User> managerLogin(String username, String password) {
+        int resultCount = userMapper.checkUsername(username);
+        if(resultCount == 0 ){
+            return ServerResponse.createByErrorMessage("用户名不存在");
+        }
+        User user  = userMapper.selectLogin(username,password);
+        if(user == null){
+            return ServerResponse.createByErrorMessage("密码错误");
+        }
+        return ServerResponse.createBySuccess("登录成功",user);
+    }
+
+    @Override
+    public ServerResponse applyToDoctor(String userId, String desc, MultipartFile[] images) throws Exception {
+        if (!StringUtils.isNotBlank(userId))
+            return ServerResponse.createByErrorMessage("请传入用户id");
+        OSSClientUtil ossClientUtil = new OSSClientUtil();
+        String doctor_work_image = null;
+        for (int i = 0;i<images.length;i++){
+            String url = ossClientUtil.uploadImg2Oss(images[i]);
+
+            if(i==0) {
+                doctor_work_image = url;
+            }else{
+                doctor_work_image = doctor_work_image+","+url;
+            }
+        }
+        Doctor doctor = new Doctor();
+        doctor.setUserId(userId);
+        doctor.setDoctorDesc(desc);
+        doctor.setDoctorWorkImage(doctor_work_image);
+        int resultCount = userMapper.applyToDoctor(doctor);
+        if(resultCount > 0){
+            return ServerResponse.createBySuccessMessage("提交申请信息成功");
+        }
+        return ServerResponse.createByErrorMessage("提交申请信息失败");
+    }
+
+    @Override
     public ServerResponse<String> getUserById(String userId,String encryptedData,String iv) {
         int result;
         try {
@@ -213,8 +255,5 @@ public class UserServiceImpl implements UserService {
         System.out.println("获取成功");
         return ServerResponse.createBySuccessMessage("授权成功");
     }
-
-
-
 
 }

@@ -1,4 +1,4 @@
 package com.wechat.dao;
 
-public class CommentMapper {
+public interface CommentMapper {
 }
