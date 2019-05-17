@@ -1,13 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wechat.dao.CommentMapper">
-    <resultMap id="BaseResultMap" type="comment" >
+    <resultMap id="BaseResultMap" type="com.wechat.pojo.Comment" >
         <id column="comment_id" property="commentId" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="VARCHAR" />
         <result column="post_id" property="postId" jdbcType="INTEGER" />
-        <result column="goodcount" property="goodcount" jdbcType="VARCHAR" />
-        <result column="comment_text" property="commentContext"/>
-        <result column="creatime" property="creatime" jdbcType="TIMESTAMP" />
+        <result column="goodcount" property="goodCount" jdbcType="VARCHAR" />
+        <result column="comment_context" property="commentContext"/>
+        <result column="count_comment" property="countComment"/>
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
         <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+       <!-- <collection property="reply" ofType="com.wechat.pojo.Reply">
+            <id column="reply_id" property="replyId"></id>
+            <result column="reply_context" property="replyContext"></result>
+            <result column="comment_id" property="commentId"></result>
+            <result column="user_id" property="userId"></result>
+            <result column="super_reply_id" property="superReplyId"></result>
+            <result column="super_reply_user_id" property="superReplyUserId"></result>
+            <result column="createtime" property="createtime"></result>
+            <result column="updatetime" property="updatetime"></result>
+        </collection>-->
     </resultMap>
+    <!--<resultMap id="ReplyMap" type="com.wechat.pojo.Reply" >
+        <id column="reply_id" property="replyId" jdbcType="INTEGER" />
+        <result column="reply_context" property="replyContext" jdbcType="VARCHAR" />
+        <result column="comment_id" property="commentId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="super_reply_id" property=""/>
+        <result column="super_reply_user_id" property=""/>
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+        <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    </resultMap>-->
+
+    <insert id="insertCommentPost" parameterType="com.wechat.pojo.Comment" >
+        INSERT into comment (user_id,post_id,goodcount,comment_text,updatetime,creatime)
+        values (#{userId},#{postId},#{goodcount},#{commentContext},NOW(),NOW())
+    </insert>
+
+   <!-- <select id="getCommentReply" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      SELECT
+      c.comment_id commentId,
+      c.user_id userId,
+      c.post_id postId,
+      c.goodcount goodcount,
+      c.comment_context commentContext,
+      c.count_comment countComment,
+      r.reply_id replyId,
+      r.reply_context replyContext,
+      r.comment_id commentId,
+      r.super_reply_id superReplyId,
+      r.super_reply_user_id superReplyUserId,
+      r.user_id userId,
+      u.nickName nickName
+      FROM  comment AS c
+      LEFT JOIN reply r on r.comment_id = c.comment_id
+      LEFT  JOIN user u on u.user_id = r.user_id
+      <where>
+          c.comment_id = #{commentId}
+      </where>
+    </select>-->
+
+    <select id="listCommentByPost" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM comment
+        <where>
+           post_id = #{postId}
+        </where>
+    </select>
+
+    <select id="getComment" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM comment WHERE comment_id=#{commentId} and post_id = #{postId}
+    </select>
+    
+    <update id="updatePlusComment" parameterType="java.lang.Integer">
+      UPDATE comment SET count_comment=CAST (count_comment AS UNSIGNED) + 1 WHERE comment_id = #{commentId};
+    </update>
+
+    <update id="updateReduceComment"  parameterType="java.lang.Integer">
+        UPDATE comment SET count_comment=CAST (count_comment AS UNSIGNED) - 1 WHERE comment_id = #{commentId};
+    </update>
+    <update id="updatePostReward"  parameterType="java.lang.Integer">
+        UPDATE post SET count_comment=CAST (count_comment AS UNSIGNED) - 1 WHERE comment_id = #{commentId};
+    </update>
+
+
 </mapper>

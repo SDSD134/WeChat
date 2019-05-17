@@ -57,6 +57,18 @@
         </set>
         where user_id = #{userId,jdbcType=VARCHAR}
     </update>
+
+    <select id="getWsMessage" parameterType="map"  resultType="com.wechat.pojo.WSMessage">
+      SELECT
+      u.avatarUrl fromUserImg,
+      u.nickName fromUserName,
+      s.nickName toUsername,
+      s.avatarUrl toUserImg
+      FROM USER u
+      JOIN USER s
+     ON u.user_id = #{fromUserId} AND s.user_id=#{toUserId}
+
+    </select>
     <insert id="applyToDoctor" parameterType="doctor">
         INSERT INTO `doctor` (
           `user_id`,

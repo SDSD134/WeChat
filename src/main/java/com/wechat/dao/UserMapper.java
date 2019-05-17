@@ -3,6 +3,8 @@ package com.wechat.dao;
 import com.wechat.pojo.Doctor;
 import com.wechat.pojo.Post;
 import com.wechat.pojo.User;
+import com.wechat.pojo.WSMessage;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ public interface UserMapper {
     int insertUser(User user);
 
     int updateUserByID(User user);
+
+    WSMessage getWsMessage(@Param("fromUserId") String fromuserId, @Param("toUserId") String toUserId);
 
     int applyToDoctor(Doctor doctor);
 

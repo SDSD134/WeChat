@@ -1,6 +1,7 @@
 package com.wechat.service.impl;
 
 
+import com.mysql.fabric.Server;
 import com.wechat.common.ServerResponse;
 
 import com.wechat.dao.PostMapper;
@@ -8,9 +9,11 @@ import com.wechat.dao.UserMapper;
 import com.wechat.pojo.Doctor;
 import com.wechat.pojo.User;
 import com.wechat.service.UserService;
+import com.wechat.util.DownLoad;
 import com.wechat.util.HttpURLConnection;
 
 import com.wechat.util.aliyunoss.OSSClientUtil;
+import com.wechat.util.RedisUtil;
 import com.wechat.util.encryptedDataUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,8 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestHeader;
+import redis.clients.jedis.Jedis;
 
-import java.io.UnsupportedEncodingException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -77,7 +82,7 @@ public class UserServiceImpl implements UserService {
         if (count > 0) {
             int updateResult = userMapper.updateUserByID(user);
             if (updateResult > 0)
-                return ServerResponse.createBySuccess("更新用户成功");
+                return ServerResponse.createBySuccess("更新用户成功",sessionId);
             return ServerResponse.createByErrorMessage("更新用户失败");
         }
         //没有这个用户，加入用户信息
@@ -98,14 +103,13 @@ public class UserServiceImpl implements UserService {
         String gender = String.valueOf(gender2);
 
         String nickNames = (String)userInfo.get("nickName");
-        String name = null;
-        try {
-            name=new String(nickNames.getBytes("iso-8859-1"),"utf-8");
+       /* try {
+            nickNames=new String(nickNames.getBytes("iso-8859-1"),"utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        System.out.println(name);
+        System.out.println(nickNames);
         String city = "";
         if(userInfo.get("city") != null) {
             city = (String)userInfo.get("city");
@@ -119,7 +123,41 @@ public class UserServiceImpl implements UserService {
             country = (String)userInfo.get("country");
         }
         String avatarUrl =(String) userInfo.get("avatarUrl");
-        JSONObject watermark = null;
+        OSSClientUtil util = null;
+        try {
+            // String fileName = avatarUrl.substring(avatarUrl.lastIndexOf("."));
+            String fileName = userId ;
+            DownLoad downLoad = new DownLoad();
+
+            for (int i = 0; i<3; i++){
+                InputStream stream = downLoad.getImageStream(avatarUrl);
+                if (stream != null){
+                    util = new OSSClientUtil();
+                    try {
+                        avatarUrl = util.uploadFile2OSS(stream,fileName);
+                        break;
+                    }catch (Exception e) {
+                        if (i == 3) {
+                            util.destory();
+                            return ServerResponse.createByErrorMessage("授权失败");
+                        }
+
+                    }
+
+                }
+                user.setAvatarUrl(avatarUrl);
+            }
+
+           /* else {
+                user.setAvatarUrl(avatarUrl);
+            }*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            System.out.println(avatarUrl);
+            util.destory();
+        }
+       /* JSONObject watermark = null;
         try {
             watermark = (JSONObject) userInfo.get("watermark");
             Long timestampLong = (long) watermark.get("timestamp");
@@ -131,11 +169,10 @@ public class UserServiceImpl implements UserService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // return ServerResponse.createByErrorMessage("授权错误");
-        }
+          // return ServerResponse.createByErrorMessage("授权错误");
+        }*/
         user.setAddress(city + province + country);
-        user.setNickName(name);
-        user.setAvatarUrl(avatarUrl);
+        user.setNickName(nickNames);
         user.setGender(gender);
         user.setUserId(userId);
         int count = userMapper.updateUserByID(user);
@@ -147,6 +184,47 @@ public class UserServiceImpl implements UserService {
         return ServerResponse.createBySuccessMessage("授权成功");
 
     }
+
+
+    public ServerResponse<String> saveAvtaUrl(String avatarUrl,@RequestHeader String userId) {
+        OSSClientUtil util = new OSSClientUtil();
+        try {
+           /* String fileName = avatarUrl.substring(avatarUrl.lastIndexOf("/"));
+            System.out.println(fileName);
+            fileName = userId + "." + fileName;*/
+           String fileName = userId;
+            DownLoad downLoad = new DownLoad();
+            InputStream stream = downLoad.getImageStream(avatarUrl);
+            if (stream != null){
+                System.out.println(fileName);
+                avatarUrl = util.uploadFile2OSS(stream,fileName);
+                return ServerResponse.createBySuccess("成功",avatarUrl);
+            }
+            else {
+                return ServerResponse.createByErrorMessage("没有获取流");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ServerResponse.createByErrorMessage("获取流错误");
+        }
+        finally {
+            util.destory();
+        }
+    }
+
+    @Override
+    public ServerResponse communicateBySeesion(String sessionId,String start ,String stop) {
+        Jedis jedis = RedisUtil.getJedis();
+        boolean isExits = jedis.exists(sessionId);
+        if (!isExits) {
+            return ServerResponse.createByErrorMessage("此对话没有消息");
+        }
+        List<String> list = jedis.lrange(sessionId,Integer.parseInt(start),Integer.parseInt(stop));
+        jedis.close();
+        return ServerResponse.createBySuccess(list);
+
+    }
+
 
     @Override
     public ServerResponse<User> managerLogin(String username, String password) {

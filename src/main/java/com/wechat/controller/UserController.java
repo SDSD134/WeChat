@@ -1,6 +1,7 @@
 package com.wechat.controller;
 
 
+import com.mysql.fabric.Server;
 import com.wechat.common.ServerResponse;
 
 import com.wechat.service.PostService;
@@ -33,10 +34,13 @@ public class UserController {
         return response;
     }
 
-    @RequestMapping(value = "/getuserinfo")
+    @RequestMapping(value = "/getuser")
     @ResponseBody
     public ServerResponse<String> getuserinfo(String userInfo, @RequestHeader("userId") String userId){
         System.out.println(userInfo);
+        if (userInfo == null) {
+            return ServerResponse.createByErrorMessage("参数错误");
+        }
         JSONObject jsonObject = null;
         try {
            jsonObject = (JSONObject) (new JSONParser().parse(userInfo));
@@ -48,12 +52,45 @@ public class UserController {
             e.printStackTrace();
             return ServerResponse.createByErrorMessage("参数错误");
         }
+
        /* System.out.println(encryptedData);
         System.out.println(iv);
         if (encryptedData == null || iv == null) {
             return ServerResponse.createByErrorMessage("获取参数失败");
         }*/
            return  userService.getUserById(userId,jsonObject);
+    }
+
+    @RequestMapping(value = "/getuserInfo")
+    @ResponseBody
+    public ServerResponse<String> getuserinfo(String iv,String encryptedData,  @RequestHeader("userId") String userId){
+
+        System.out.println(encryptedData);
+        System.out.println(iv);
+        if (encryptedData == null || iv == null) {
+            return ServerResponse.createByErrorMessage("获取参数失败");
+        }
+        return  userService.getUserById(userId,encryptedData,iv);
+    }
+
+
+    @RequestMapping(value = "/test")
+    @ResponseBody
+    public ServerResponse<String> test(String imgUrl,@RequestHeader("userId") String userId) {
+
+        return userService.saveAvtaUrl(imgUrl,userId);
+        //return null;
+    }
+
+    @RequestMapping(value = "communicateBySeesion")
+    @ResponseBody
+    public ServerResponse communicateBySeesion(String sessionId,String start,String end) {
+        if (sessionId == null || start == null || end == null) {
+            return ServerResponse.createByErrorMessage("没有此对话");
+        }
+
+        return userService.communicateBySeesion(sessionId,start,end);
+
     }
     @RequestMapping(value = "/applyToDoctor" ,method = RequestMethod.POST)
     @ResponseBody

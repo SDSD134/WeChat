@@ -22,16 +22,20 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         response.setCharacterEncoding("utf-8");
         String userId = request.getHeader("userId");
+        response.setContentType("application/json;charset=UTF-8");
         if (null != userId) {
+            System.out.println(userId);
             if (userMapper.countUserById(userId) > 0)
                 return true;
+            System.out.println("拦截器错误");
             String responses = ServerResponse.createByErrorMessage("参数错误").toString();
-            //JSONObject json = (JSONObject) new JSONParser().parse(responses);
-            response.getWriter().print(responses);
+           // JSONObject json = (JSONObject) new JSONParser().parse(responses);
+            response.getWriter().write(responses);
             return false;
         }
 
         response.getWriter().print(ServerResponse.createByErrorMessage("缺少参数"));
+        response.getWriter().close();
         return false;
     }
 

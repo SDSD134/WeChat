@@ -5,6 +5,42 @@ public class WSMessage {
     private String toUser;
     private String message;
     private String messageType;
+    private String fromUserName;
+    private String toUsername;
+    private String fromUserImg;
+    private String toUserImg;
+
+    public String getFromUserName() {
+        return fromUserName;
+    }
+
+    public void setFromUserName(String fromUserName) {
+        this.fromUserName = fromUserName;
+    }
+
+    public String getToUsername() {
+        return toUsername;
+    }
+
+    public void setToUsername(String toUsername) {
+        this.toUsername = toUsername;
+    }
+
+    public String getFromUserImg() {
+        return fromUserImg;
+    }
+
+    public void setFromUserImg(String fromUserImg) {
+        this.fromUserImg = fromUserImg;
+    }
+
+    public String getToUserImg() {
+        return toUserImg;
+    }
+
+    public void setToUserImg(String toUserImg) {
+        this.toUserImg = toUserImg;
+    }
 
     public String getFromUser() {
         return fromUser;
@@ -40,11 +76,15 @@ public class WSMessage {
 
     @Override
     public String toString() {
-        return "{" +
+        return "WSMessage{" +
                 "fromUser='" + fromUser + '\'' +
                 ", toUser='" + toUser + '\'' +
                 ", message='" + message + '\'' +
                 ", messageType='" + messageType + '\'' +
+                ", fromUserName='" + fromUserName + '\'' +
+                ", toUsername='" + toUsername + '\'' +
+                ", fromUserImg='" + fromUserImg + '\'' +
+                ", toUserImg='" + toUserImg + '\'' +
                 '}';
     }
 }

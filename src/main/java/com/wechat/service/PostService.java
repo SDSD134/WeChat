@@ -3,6 +3,7 @@ package com.wechat.service;
 import com.wechat.common.ServerResponse;
 import com.wechat.pojo.Post;
 import org.json.simple.JSONObject;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -11,9 +12,9 @@ public interface PostService {
 
     ServerResponse<List<Post>> getAllPost(int pageNum,int pageSize);
 
-    ServerResponse<String> deletPostById(int id);
+    ServerResponse<String> deletePostById(int id);
 
-    ServerResponse<String> addPostRead(int id);
+    ServerResponse<String> addPostReadOrPraise(Integer  id,String userId,String type);
 
-    ServerResponse<String> addPraiseById(int id);
+    ServerResponse<String> addPostById(Post post, MultipartFile[] postImages);
 }
