@@ -9,9 +9,6 @@ import org.apache.commons.logging.LogFactory;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,15 +21,24 @@ import org.springframework.web.multipart.MultipartFile;
 public class OSSClientUtil {
 
   Log log = LogFactory.getLog(OSSClientUtil.class);
-  private String endpoint = "http://oss-cn-beijing.aliyuncs.com";//您的endpoint
-  private String accessKeyId = "LTAIPFxYW3ZKWbpv";//您的accessKeyId
-  private String accessKeySecret = "IJTtkbRa2pIrfIttuefmfEISbs3IS4";//您的accessKeySecret
-  //空间
-  private String bucketName = "pzduploadimage";
+  // endpoint以杭州为例，其它region请按实际情况填写
+  private String endpoint = "oss-cn-beijing.aliyuncs.com";
+  // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
+  private String accessKeyId = "LTAIdnIxCBWY5jDj";
+  private String accessKeySecret = "X7e42RTWbT9IrJD4VIAowJOjuc6UBw";
+  private String bucketName = "wwjyxxpzd";
   //文件存储目录
-  private String filedir = "image/";
+  private String filedir = "images/";
 
   private OSSClient ossClient;
+
+  public OSSClient getOssClient() {
+    return ossClient;
+  }
+
+  public void setOssClient(OSSClient ossClient) {
+    this.ossClient = ossClient;
+  }
 
   public OSSClientUtil() {
     ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
@@ -56,8 +62,9 @@ public class OSSClientUtil {
    * 上传图片
    *
    * @param url
+   * @throws Exception
    */
-  public void uploadImg2Oss(String url) throws Exception{
+  public void uploadImg2Oss(String url) throws Exception {
     File fileOnServer = new File(url);
     FileInputStream fin;
     try {
@@ -71,8 +78,8 @@ public class OSSClientUtil {
 
 
   public String uploadImg2Oss(MultipartFile file) throws Exception {
-    if (file.getSize() > 5 * 1024 * 1024) {
-      throw new Exception("上传图片大小不能超过5M！");
+    if (file.getSize() > 1024 * 1024) {
+      throw new Exception("上传图片大小不能超过1M！");
     }
     String originalFilename = file.getOriginalFilename();
     String substring = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
@@ -81,12 +88,12 @@ public class OSSClientUtil {
     try {
       InputStream inputStream = file.getInputStream();
       this.uploadFile2OSS(inputStream, name);
-      return name;
+      return "https://" + this.bucketName+"."+this.endpoint+ "//" + filedir+name;
+
     } catch (Exception e) {
       throw new Exception("图片上传失败");
     }
   }
-
   /**
    * 获得图片路径
    *

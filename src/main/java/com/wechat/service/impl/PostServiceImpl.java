@@ -112,9 +112,10 @@ public class PostServiceImpl implements PostService {
         return ServerResponse.createByErrorMessage("种类参数错误");
     }
 
-    //未写mapper
+
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public ServerResponse<String> addPostById(Post post, MultipartFile[] postImages) {
+    public ServerResponse addPostById(Post post, MultipartFile[] postImages) {
         String imageUrl = null;
         System.out.println(postImages.length);
         if (postImages.length > 0) {
@@ -141,21 +142,33 @@ public class PostServiceImpl implements PostService {
         }
         Integer add = null;
         post.setPostImage(imageUrl);
+        Integer count = 0;
+        Integer postId = 0;
         if(post.getPostId()==null&& post.getPostContent() != null) {
-            Integer postId = postMapper.addPostById(post);
-            if (postId > 0 && imageUrl != null) {
-                add =  postMapper.addImageByPost(post.getPostId(),post.getPostImage());
+            boolean flag = true;
+            try {
+                postId = postMapper.addPostById(post);
+                System.out.println(postId);
+                if (postId > 0 && imageUrl != null) {     //添加成功
+                    count =  postMapper.addImageByPost(post.getPostId(),post.getPostImage());
+                    if (count == 0 &&!( add > 0)) {
+                        return ServerResponse.createBySuccessMessage("添加失败");
+                    }
+                }
+            } catch (Exception e) {
+                flag = false;
+                throw e;
+
             }
-        }
-        if(imageUrl != null) {
-            add =  postMapper.addImageByPost(post.getPostId(),post.getPostImage());
+            if (flag == false) {
+                return ServerResponse.createByErrorMessage("添加失败");
+            }
+
         }
 
-        if (add != null && add >0) {
-            return ServerResponse.createBySuccessMessage("添加成功");
-        }
 
-        return ServerResponse.createByErrorMessage("发布失败");
+
+        return ServerResponse.createBySuccess(postId);
     }
 
    /* public ServerResponse<Comment> showCommentByPost(String postId) {

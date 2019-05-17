@@ -24,12 +24,13 @@ public class LoginInterceptor implements HandlerInterceptor {
         String userId = request.getHeader("userId");
         response.setContentType("application/json;charset=UTF-8");
         if (null != userId) {
+            System.out.println(userId);
             if (userMapper.countUserById(userId) > 0)
                 return true;
             System.out.println("拦截器错误");
             String responses = ServerResponse.createByErrorMessage("参数错误").toString();
-            JSONObject json = (JSONObject) new JSONParser().parse(responses);
-            response.getWriter().write(json.toString());
+           // JSONObject json = (JSONObject) new JSONParser().parse(responses);
+            response.getWriter().write(responses);
             return false;
         }
 

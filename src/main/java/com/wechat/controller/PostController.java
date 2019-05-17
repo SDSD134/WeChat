@@ -63,9 +63,10 @@ public class PostController {
     }
 
     //添加帖子
-    @RequestMapping(value = "/addPostById", method = RequestMethod.POST)
+    @RequestMapping(value = "/addPostById")
     @ResponseBody
-    public ServerResponse<String> addPostById(@RequestHeader String userId,Post post,@RequestParam("postImages")MultipartFile[] postImages) {
+    public ServerResponse addPostById(@RequestHeader String userId,Post post,
+                                              @RequestParam(value = "postImages") MultipartFile[] postImages) {
         if (post == null) {
             return ServerResponse.createByErrorMessage("帖子参数错误");
         }
