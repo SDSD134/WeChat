@@ -29,26 +29,26 @@
     </resultMap>
     <select id="getPetDetail" parameterType="Integer" resultMap="petDetail">
         select
-        p.pet_id,
-        p.pet_type,
-        p.pet_price,
-        p.pet_title,
-        p.pet_desc,
-        p.createtime,
-        p.pet_city,
-        p.wx,
-        p.phone,
-        p.pet_name,
-        p.pet_age,
-        p.pet_gender,
-        p.pet_breed,
-        p.is_vaccine,
-        u.user_id,
-        u.avatarUrl,
-        u.gender,
-        u.address,
-        pi.pet_image_id,
-        pi.pet_image_url
+            p.pet_id,
+            p.pet_type,
+            p.pet_price,
+            p.pet_title,
+            p.pet_desc,
+            p.createtime,
+            p.pet_city,
+            p.wx,
+            p.phone,
+            p.pet_name,
+            p.pet_age,
+            p.pet_gender,
+            p.pet_breed,
+            p.is_vaccine,
+            u.user_id,
+            u.avatarUrl,
+            u.gender,
+            u.address,
+            pi.pet_image_id,
+            pi.pet_image_url
         from pet p
         left join user u on p.user_id = u.user_id
         left join pet_image pi on p.pet_id = pi.pet_id
@@ -56,18 +56,18 @@
     </select>
     <select id="listAllPet" parameterType="pet" resultType="petVO">
         select
-        p.pet_id petId,
-        p.pet_type petType,
-        p.pet_price petPrice,
-        p.user_id userId,
-        p.pet_title petTitle,
-        p.pet_city petCity,
-        p.pet_name petName,
-        p.pet_age petAge,
-        p.pet_gender petGender,
-        p.pet_breed petBreed,
-        p.is_vaccine isVaccine,
-        pi.pet_image_url mainImage
+          p.pet_id petId,
+          p.pet_type petType,
+          p.pet_price petPrice,
+          p.user_id userId,
+          p.pet_title petTitle,
+          p.pet_city petCity,
+          p.pet_name petName,
+          p.pet_age petAge,
+          p.pet_gender petGender,
+          p.pet_breed petBreed,
+          p.is_vaccine isVaccine,
+          pi.pet_image_url mainImage
         from pet p
         left join pet_image pi on p.pet_id = pi.pet_id
         <where>
@@ -76,73 +76,72 @@
                 and p.pet_type = #{petType}
             </if>
             <if test="petTitle !=null">
-                and p.pet_title like '%${petTitle}%'
+              and p.pet_title like '%${petTitle}%'
             </if>
-            <if test="petCity != null">
-                and p.pet_city = #{petCity}
-            </if>
+             <if test="petCity != null">
+                 and p.pet_city = #{petCity}
+             </if>
         </where>
         order by pet_id desc
     </select>
 
     <insert id="savePet" parameterType="pet">
         INSERT INTO `pet` (
-        `pet_type`,
-        `pet_price`,
-        `user_id`,
-        `pet_title`,
-        `pet_desc`,
-        `createtime`,
-        `updatetime`,
-        `pet_city`,
-        `wx`,
-        `phone`,
-        `pet_name`,
-        `pet_age`,
-        `pet_gender`,
-        `pet_breed`,
-        `is_vaccine`
-
+          `pet_type`,
+          `pet_price`,
+          `user_id`,
+          `pet_title`,
+          `pet_desc`,
+          `createtime`,
+          `updatetime`,
+          `pet_city`,
+          `wx`,
+          `phone`,
+          `pet_name`,
+          `pet_age`,
+          `pet_gender`,
+          `pet_breed`,
+          `is_vaccine`
         )
         VALUES
-        (
-        #{petType},
-        #{petPrice},
-        #{userId},
-        #{petTitle},
-        #{petDesc},
-        now(),
-        now(),
-        #{petCity},
-        #{wx},
-        #{phone},
-        #{petName},
-        #{petAge},
-        #{petGender},
-        #{petBreed},
-        #{isVaccine}
-        )
+          (
+            #{petType},
+            #{petPrice},
+            #{userId},
+            #{petTitle},
+            #{petDesc},
+            now(),
+            now(),
+           #{petCity},
+            #{wx},
+            #{phone},
+            #{petName},
+            #{petAge},
+            #{petGender},
+            #{petBreed},
+            #{isVaccine}
+      )
     </insert>
     <insert id="uploadImage" parameterType="petImage">
         INSERT INTO pet_image (
-        pet_image_type,
-        pet_image_url,
-        pet_id,
-        createtime,
-        updatetime
+          pet_image_type,
+          pet_image_url,
+          pet_id,
+          createtime,
+          updatetime
         )
         VALUES
-        (
-        #{petImageType},
-        #{petImageUrl},
-        #{petId},
-        now(),
-        now()
-        )
+          (
+           #{petImageType},
+           #{petImageUrl},
+           #{petId},
+           now(),
+           now()
+          )
     </insert>
     <update id="updatePet" parameterType="pet">
         UPDATE
-        `pet`
+          `pet`
         SET
         <if test="petId != null">
             `pet_id` =  #{petId},

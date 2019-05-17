@@ -6,10 +6,7 @@ import com.wechat.service.PetService;
 import com.wechat.pojo.vo.PetDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +28,8 @@ public class PetController {
     }
     @RequestMapping(value = "/publishOrUpdate",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse publishOrUpdate(Pet pet,HttpServletRequest request,@RequestParam("petImages")MultipartFile[] petImages) throws Exception {
+    public ServerResponse publishOrUpdate(Pet pet,HttpServletRequest request,@RequestParam("petImages")MultipartFile[] petImages, @RequestHeader("userId")String userId) throws Exception {
+        pet.setUserId(userId);
         return petService.saveOrUpdate(pet,petImages);
     }
     @RequestMapping(value = "/deletePet",method = RequestMethod.GET)

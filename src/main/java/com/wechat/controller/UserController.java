@@ -12,7 +12,9 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -90,7 +92,11 @@ public class UserController {
         return userService.communicateBySeesion(sessionId,start,end);
 
     }
+    @RequestMapping(value = "/applyToDoctor" ,method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse applyToDoctor(@RequestHeader("userId")String userId, String desc, HttpServletRequest request, @RequestParam("images")MultipartFile[] images) throws Exception {
 
 
-
+        return userService.applyToDoctor(userId,desc,images);
+    }
 }

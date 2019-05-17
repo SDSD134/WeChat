@@ -47,6 +47,10 @@ public class PetServiceImpl implements PetService {
         if (petDetail == null) {
             return ServerResponse.createByErrorMessage("此交易已下架");
         }
+        System.out.println(petDetail.getCreatetime());
+        for (PetImage petImage : petDetail.getPetImages()){
+            System.out.println(petImage);
+        }
         return ServerResponse.createBySuccess(petDetail);
     }
 
@@ -85,8 +89,11 @@ public class PetServiceImpl implements PetService {
                         PetImage petImage = new PetImage();
                         petImage.setPetId(pet.getPetId());
                         petImage.setPetImageUrl(imageUrl);
-                        if (i == 0)
+                        if (i == 0) {
                             petImage.setPetImageType("1");
+                        } else {
+                            petImage.setPetImageType("2");
+                        }
                         petMapper.uploadImage(petImage);
                     }
                 }
