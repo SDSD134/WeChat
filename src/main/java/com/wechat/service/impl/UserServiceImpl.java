@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
         //获取失败返回错误信息
         if (session_key == null|| openid == null ) {
-         //   String errormsg = (String) json.get("errmsg");
+            //   String errormsg = (String) json.get("errmsg");
             return ServerResponse.createByErrorMessage("授权失败");
         }
         //String sessionId = UUID.randomUUID().toString().replace("-", "");
@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-          // return ServerResponse.createByErrorMessage("授权错误");
+            // return ServerResponse.createByErrorMessage("授权错误");
         }
         user.setAddress(city + province + country);
         user.setNickName(name);
@@ -191,7 +191,7 @@ public class UserServiceImpl implements UserService {
     public ServerResponse<String> getUserById(String userId,String encryptedData,String iv) {
         int result;
         try {
-           result = userMapper.countUserById(userId);
+            result = userMapper.countUserById(userId);
             if (!(result > 0)) {
                 return ServerResponse.createByErrorMessage("未登录，请重新登录");
             }
