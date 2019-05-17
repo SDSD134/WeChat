@@ -5,6 +5,7 @@ import com.wechat.pojo.Post;
 import com.wechat.service.CommentService;
 import com.wechat.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,7 +67,7 @@ public class PostController {
     @RequestMapping(value = "/addPostById")
     @ResponseBody
     public ServerResponse addPostById(@RequestHeader String userId,Post post,
-                                              @RequestParam(value = "postImages") MultipartFile[] postImages) {
+                                      @RequestParam(value = "postImages",required = false) MultipartFile[] postImages) {
         if (post == null) {
             return ServerResponse.createByErrorMessage("帖子参数错误");
         }

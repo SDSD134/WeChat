@@ -67,8 +67,8 @@
     </delete>
 
     <insert id="addPostById" parameterType="com.wechat.pojo.Post" useGeneratedKeys="true" keyProperty="postId" keyColumn="post_id" >
-    INSERT into post (post_content,user_id,post_type,createtime,updatetime)
-    values (#{postContent},#{userId},#{postContent},NOW(),NOW())
+    INSERT into post (post_content,user_id,createtime,updatetime)
+    values (#{postContent},#{userId},NOW(),NOW())
   </insert>
     <insert id="addImageByPost" parameterType="map">
         INSERT into post_image(post_image_url,post_id,createtime,updatetime)
