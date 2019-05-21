@@ -88,7 +88,7 @@ public class OSSClientUtil {
     try {
       InputStream inputStream = file.getInputStream();
       this.uploadFile2OSS(inputStream, name);
-      return "https://" + this.bucketName+"."+this.endpoint+ "//" + filedir+name;
+      return "https://" + this.bucketName+"."+this.endpoint+ "/" + filedir+name;
 
     } catch (Exception e) {
       throw new Exception("图片上传失败");

@@ -1,6 +1,7 @@
 package com.wechat.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class Post {
     private Integer postId;
@@ -21,9 +22,17 @@ public class Post {
 
     private Date createTime;
 
-    private String postImage;
+    private List<String> postImage;
 
     private Date updateTime;
+
+    public List<String> getPostImage() {
+        return postImage;
+    }
+
+    public void setPostImage(List<String> postImage) {
+        this.postImage = postImage;
+    }
 
     private String isPraise;
 
@@ -41,14 +50,6 @@ public class Post {
 
     public void setPostContent(String postContent) {
         this.postContent = postContent;
-    }
-
-    public String getPostImage() {
-        return postImage;
-    }
-
-    public void setPostImage(String postImage) {
-        this.postImage = postImage;
     }
 
     public String getPostGoodCount() {
@@ -127,6 +128,7 @@ public class Post {
         this.updateTime = updateTime;
     }
 
+
     @Override
     public String toString() {
         return "Post{" +
@@ -138,8 +140,8 @@ public class Post {
                 ", postReward='" + postReward + '\'' +
                 ", postType='" + postType + '\'' +
                 ", postContent='" + postContent + '\'' +
-                ", postImage='" + postImage + '\'' +
                 ", createTime=" + createTime +
+                ", postImage=" + postImage +
                 ", updateTime=" + updateTime +
                 ", isPraise='" + isPraise + '\'' +
                 '}';

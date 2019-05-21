@@ -7,6 +7,12 @@ public class Student {
     }
 
     public static void main(String[] args) {
-        ((Student)null).doSomething();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 100);
+        Date finalDate = calendar.getTime();
+// 打印日期
+        System.out.println("*******"+sdf.format(finalDate )+"********");
     }
+
 }

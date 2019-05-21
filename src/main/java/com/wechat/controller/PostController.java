@@ -23,11 +23,13 @@ public class PostController {
     private CommentService commentService;
 
     //通过用户获取帖子
-    @RequestMapping(value = "/getAllPostByUSer")
+    @RequestMapping(value = "/getAllPostByUser")
     @ResponseBody
-    public ServerResponse<List<Post>> getAllPostByUSer(@RequestHeader String userid){
+    public ServerResponse<List<Post>> getAllPostByUSer(@RequestHeader String userId,
+                                                       @RequestParam(value = "pageNum",defaultValue = "1")int pageNum,
+                                                       @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         //假设可以获取(userid已存在)
-        return  postService.getAllPostByUSer(userid);
+        return  postService.getAllPostByUSer(userId,pageNum,pageSize);
     }
 
     //获取所有帖子
@@ -68,9 +70,10 @@ public class PostController {
     @ResponseBody
     public ServerResponse addPostById(@RequestHeader String userId,Post post,
                                       @RequestParam(value = "postImages",required = false) MultipartFile[] postImages) {
-        if (post == null) {
+        if (post.getPostContent() == null || post.getPostContent() == "") {
             return ServerResponse.createByErrorMessage("帖子参数错误");
         }
+        System.out.println(post.getPostId());
         post.setUserId(userId);
         return postService.addPostById(post,postImages);
     }

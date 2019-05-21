@@ -34,4 +34,6 @@ public interface PostMapper {
     Integer addPostById(Post post);
 
     Integer addImageByPost(@Param("postId") Integer postId,@Param("imageUrl")String imageUrl);
+
+    List<String> getImageByPost(Integer postId);
 }

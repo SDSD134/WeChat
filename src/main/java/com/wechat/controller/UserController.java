@@ -45,7 +45,7 @@ public class UserController {
         try {
            jsonObject = (JSONObject) (new JSONParser().parse(userInfo));
             if (jsonObject == null) {
-                return ServerResponse.createByErrorMessage("参数错误");
+                return ServerResponse.createByErrorMessage("参数格式错误");
             }
 
         } catch (ParseException e) {
