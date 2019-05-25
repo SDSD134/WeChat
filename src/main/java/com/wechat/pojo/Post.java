@@ -20,6 +20,8 @@ public class Post {
 
     private String postContent;
 
+    private User user;
+
     private Date createTime;
 
     private List<String> postImage;
@@ -35,6 +37,14 @@ public class Post {
     }
 
     private String isPraise;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getIsPraise() {
         return isPraise;

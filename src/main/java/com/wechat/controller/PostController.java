@@ -36,10 +36,11 @@ public class PostController {
     @RequestMapping(value = "/getAllPost")
     @ResponseBody
     public ServerResponse getAllPost(@RequestParam(value = "pageNum",defaultValue = "1")int pageNum,
-                                     @RequestParam(value = "pageSize",defaultValue = "5")int pageSize
+                                     @RequestParam(value = "pageSize",defaultValue = "5")int pageSize,
+                                     @RequestHeader String userId
                                      ){
         //假设可以获取(userid已存在)
-        return  postService.getAllPost(pageNum,pageSize);
+        return  postService.getAllPost(pageNum,pageSize,userId);
     }
 
     //删除所有帖子
@@ -68,7 +69,7 @@ public class PostController {
     //添加帖子
     @RequestMapping(value = "/addPostById")
     @ResponseBody
-    public ServerResponse addPostById(@RequestHeader String userId,Post post,
+    public ServerResponse<String>  addPostById(@RequestHeader String userId,Post post,
                                       @RequestParam(value = "postImages",required = false) MultipartFile[] postImages) {
         if (post.getPostContent() == null || post.getPostContent() == "") {
             return ServerResponse.createByErrorMessage("帖子参数错误");
@@ -78,13 +79,13 @@ public class PostController {
         return postService.addPostById(post,postImages);
     }
 
-    //增加阅读数量,进行点赞，待改进
+    //增加阅读数量,并返回一级评论
     @RequestMapping(value = "/readPost")
     @ResponseBody
-    public ServerResponse readPost(String postId){
+    public ServerResponse readPost(String postId,@RequestHeader String userId){
         if (postId == null)
             return ServerResponse.createByErrorMessage("参数错误");
-       postService.addPostReadOrPraise(Integer.parseInt(postId),null ,"readCount");
+       postService.addPostReadOrPraise(Integer.parseInt(postId),userId ,"readCount");
         return  commentService.listCommentByPost(postId);
     }
 

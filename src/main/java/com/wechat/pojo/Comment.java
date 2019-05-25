@@ -23,6 +23,8 @@ public class Comment {
 
     private List<Reply> reply;
 
+    private  User user;
+
     public Integer getCommentId() {
         return commentId;
     }
@@ -77,6 +79,22 @@ public class Comment {
 
     public List<Reply> getReply() {
         return reply;
+    }
+
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setReply(List<Reply> reply) {

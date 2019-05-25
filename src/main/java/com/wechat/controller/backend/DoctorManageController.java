@@ -18,7 +18,7 @@ public class DoctorManageController {
     @ResponseBody
     public ServerResponse validateDoctor() {
         return doctorService.listDoctorApplication();
-    }
+}
     @RequestMapping("/addDoctor")
     @ResponseBody
     public ServerResponse addDoctor(Doctor doctor) {

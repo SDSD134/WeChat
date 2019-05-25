@@ -1,5 +1,6 @@
 package com.wechat.service.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wechat.common.ServerResponse;
@@ -43,7 +44,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ServerResponse getAllPost(int pageNum, int pageSize) {
+    public ServerResponse getAllPost(int pageNum, int pageSize,String userId) {
         //PageHelper只对紧跟着的第一个SQL语句起作用
         PageHelper.startPage(pageNum, pageSize);
         List<Post> postList = postMapper.getAllPost();
@@ -103,7 +104,7 @@ public class PostServiceImpl implements PostService {
                 try {
                     addCount = postMapper.addPraiseById(id);
                     //添加点赞记录
-                    praise = postMapper.addGoodPost(userId, id);
+                    praise = postMapper.addGoodPost(Long.parseLong(userId), id);
                 } catch (RuntimeException e) {
                     flag = 1;
                     throw e;
@@ -114,7 +115,7 @@ public class PostServiceImpl implements PostService {
 
                 if (addCount > 0 && praise > 0)
                     return ServerResponse.createBySuccessMessage("点赞成功");
-                Integer addGood = postMapper.addGoodPost(userId, id);
+                Integer addGood = postMapper.addGoodPost(Long.parseLong(userId), id);
 
             }
 
@@ -126,8 +127,9 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public ServerResponse addPostById(Post post, MultipartFile[] postImages) {
+    public ServerResponse<String> addPostById(Post post, MultipartFile[] postImages) {
         String imageUrl = null;    //图片路径
+        System.out.println("图片长度为：" + postImages.length);
         if (postImages.length > 0) {
             OSSClientUtil ossClientUtil = new OSSClientUtil();
             for (int i = 0; i < postImages.length; i++) {
@@ -152,7 +154,7 @@ public class PostServiceImpl implements PostService {
             try {
                 //图片已经上传成功
                 if (post.getPostId() == null || !(post.getPostId() >0)) {
-                    Integer postId = postMapper.addPostById(post);   //返回插入的postId
+                        Integer postId = postMapper.addPostById(post);   //返回插入的postId
                     if (postId > 0) {
                         postMapper.addImageByPost(post.getPostId(), imageUrl);
                     }
@@ -167,6 +169,6 @@ public class PostServiceImpl implements PostService {
             }
             if (flag == false)
                 return ServerResponse.createByErrorMessage("添加失败");
-            return ServerResponse.createBySuccess("添加成功",post.getPostId());
+            return ServerResponse.createBySuccess(post.getPostId().toString());
     }
 }
