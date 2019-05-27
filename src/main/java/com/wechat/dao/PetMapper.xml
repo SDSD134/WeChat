@@ -54,7 +54,7 @@
         left join pet_image pi on p.pet_id = pi.pet_id
         where p.pet_id = #{petId}
     </select>
-    <select id="listAllPet" parameterType="pet" resultType="petVO">
+    <select id="listAllPet"  resultType="petVO">
         select
           p.pet_id petId,
           p.pet_type petType,
@@ -72,20 +72,21 @@
         left join pet_image pi on p.pet_id = pi.pet_id
         <where>
             pi.pet_image_type = '1'
-            <if test="pet_type != null">
-                and p.pet_type = #{petType}
+            <if test="pet.petType != null">
+                and p.pet_type = #{pet.petType}
             </if>
-            <if test="petTitle !=null">
-              and p.pet_title like '%${petTitle}%'
+            <if test="pet.petTitle !=null">
+              and p.pet_title like '%${pet.petTitle}%'
             </if>
-             <if test="petCity != null">
-                 and p.pet_city = #{petCity}
+             <if test="pet.petCity != null">
+                 and p.pet_city = #{pet.petCity}
              </if>
         </where>
-        order by pet_id desc
+        order by p.pet_id desc
     </select>
 
-    <insert id="savePet" parameterType="pet">
+    <insert id="savePet" parameterType="com.wechat.pojo.Pet" useGeneratedKeys="true"  keyProperty="petId" >
+
         INSERT INTO `pet` (
           `pet_type`,
           `pet_price`,

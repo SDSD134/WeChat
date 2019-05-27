@@ -9,6 +9,7 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
+
 <!--配置数据源-->
     <context:property-placeholder location="classpath:properties/*.properties"/>
     <!--数据库连接池-->

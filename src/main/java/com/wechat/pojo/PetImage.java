@@ -57,16 +57,4 @@ public class PetImage {
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
     }
-
-    @Override
-    public String toString() {
-        return "PetImage{" +
-                "petImageId=" + petImageId +
-                ", petImageType='" + petImageType + '\'' +
-                ", petImageUrl='" + petImageUrl + '\'' +
-                ", petId=" + petId +
-                ", createtime=" + createtime +
-                ", updatetime=" + updatetime +
-                '}';
-    }
 }

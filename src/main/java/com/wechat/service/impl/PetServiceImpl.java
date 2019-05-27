@@ -26,6 +26,7 @@ public class PetServiceImpl implements PetService {
         if(!StringUtils.isNotBlank(pet.getPetType())){
             return ServerResponse.createByErrorMessage("没有传入交易类型");
         }
+        System.out.println(pet.getPetType());
         //startPage--start
         //填充自己的sql查询逻辑
         //pageHelper--收尾
@@ -65,7 +66,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public ServerResponse saveOrUpdate(Pet pet,MultipartFile[] petImages) throws Exception {
+    public ServerResponse saveOrUpdate(Pet pet,MultipartFile image) throws Exception {
         if (pet != null ) {
             if (!StringUtils.isNotBlank(pet.getWx())||!StringUtils.isNotBlank(pet.getPhone()))
                 return ServerResponse.createByErrorMessage("微信和手机号必须留一个");
@@ -79,28 +80,30 @@ public class PetServiceImpl implements PetService {
                 return ServerResponse.createByErrorMessage("添加宠物性别");
             if (!StringUtils.isNotBlank(pet.getPetName()))
                 return ServerResponse.createByErrorMessage("添加宠物昵称");
-            if (pet.getPetId()==null){
+            if (pet.getPetId()==null || !(pet.getPetId() > 0)){
                 //发布
                 int resultCount = petMapper.savePet(pet);
-                if (petImages != null) {
+                System.out.println("获取id" + pet.getPetId());
+                if (image != null) {
                     OSSClientUtil ossClientUtil = new OSSClientUtil();
-                    for (int i = 0; i < petImages.length; i++) {
-                        String imageUrl = ossClientUtil.uploadImg2Oss(petImages[i]);
-                        PetImage petImage = new PetImage();
-                        petImage.setPetId(pet.getPetId());
-                        petImage.setPetImageUrl(imageUrl);
-                        if (i == 0) {
-                            petImage.setPetImageType("1");
-                        } else {
-                            petImage.setPetImageType("2");
-                        }
-                        petMapper.uploadImage(petImage);
-                    }
+                    String imageUrl = ossClientUtil.uploadImg2Oss(image);
+                    PetImage petImage = new PetImage();
+                    petImage.setPetId(pet.getPetId());
+                    petImage.setPetImageUrl(imageUrl);
+                    petImage.setPetImageType("1");
+                    petMapper.uploadImage(petImage);
                 }
                 if (resultCount > 0)
-                    return ServerResponse.createBySuccessMessage("添加成功");
+                    return ServerResponse.createBySuccess("添加成功",pet.getPetId());
             } else {
-                petMapper.updatePet(pet);
+                OSSClientUtil ossClientUtil = new OSSClientUtil();
+                String imageUrl = ossClientUtil.uploadImg2Oss(image);
+                PetImage petImage = new PetImage();
+                petImage.setPetId(pet.getPetId());
+                petImage.setPetImageUrl(imageUrl);
+                petImage.setPetImageType("2");
+                petMapper.uploadImage(petImage);
+                //petMapper.updatePet(pet);
             }
         }
         return ServerResponse.createByErrorMessage("新增或更新宠物信息不正确");

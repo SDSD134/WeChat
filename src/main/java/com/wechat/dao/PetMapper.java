@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface PetMapper {
-    List<PetVO> listAllPet(Pet pet) throws Exception;
+    List<PetVO> listAllPet(@Param("pet")Pet pet) throws Exception;
 
     PetDetailVO getPetDetail(@Param("petId") Integer petId) throws Exception;
 

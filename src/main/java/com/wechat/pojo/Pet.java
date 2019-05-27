@@ -159,4 +159,27 @@ public class Pet {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "petId=" + petId +
+                ", petType='" + petType + '\'' +
+                ", petPrice='" + petPrice + '\'' +
+                ", userId='" + userId + '\'' +
+                ", petTitle='" + petTitle + '\'' +
+                ", petDesc='" + petDesc + '\'' +
+                ", createtime=" + createtime +
+                ", updatetime=" + updatetime +
+                ", petCity='" + petCity + '\'' +
+                ", wx='" + wx + '\'' +
+                ", phone='" + phone + '\'' +
+                ", petName='" + petName + '\'' +
+                ", petAge='" + petAge + '\'' +
+                ", petGender='" + petGender + '\'' +
+                ", petBreed='" + petBreed + '\'' +
+                ", isVaccine='" + isVaccine + '\'' +
+                ", user=" + user +
+                '}';
+    }
 }

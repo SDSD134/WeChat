@@ -12,5 +12,5 @@ public interface PetService {
 
     ServerResponse deletePet(Integer petId) throws Exception;
 
-    ServerResponse saveOrUpdate(Pet pet,MultipartFile[] petImages)throws Exception;
+    ServerResponse saveOrUpdate(Pet pet,MultipartFile image)throws Exception;
 }

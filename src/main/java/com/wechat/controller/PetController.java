@@ -18,19 +18,19 @@ public class PetController {
     private PetService petService;
     @RequestMapping(value = "/allPet",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse allPet(Pet pet, @RequestParam(value = "pageNum",defaultValue = "1")int pageNum, @RequestParam(value = "pageSize",defaultValue = "5") int pageSize, String token) throws Exception {
+    public ServerResponse allPet(Pet pet, @RequestParam(value = "pageNum",defaultValue = "1")int pageNum, @RequestParam(value = "pageSize",defaultValue = "5") int pageSize) throws Exception {
         return petService.listAllPet(pet,pageNum,pageSize);
     }
     @RequestMapping(value = "/petDetail",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PetDetailVO> petDetail(Integer petId, String token) throws Exception {
+    public ServerResponse<PetDetailVO> petDetail(Integer petId) throws Exception {
         return petService.getPetDetail(petId);
     }
     @RequestMapping(value = "/publishOrUpdate",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse publishOrUpdate(Pet pet,HttpServletRequest request,@RequestParam("petImages")MultipartFile[] petImages, @RequestHeader("userId")String userId) throws Exception {
+    public ServerResponse publishOrUpdate(@RequestParam(value="image")MultipartFile image,Pet pet,HttpServletRequest request, @RequestHeader("userId")String userId) throws Exception {
         pet.setUserId(userId);
-        return petService.saveOrUpdate(pet,petImages);
+        return petService.saveOrUpdate(pet,image);
     }
     @RequestMapping(value = "/deletePet",method = RequestMethod.GET)
     @ResponseBody
