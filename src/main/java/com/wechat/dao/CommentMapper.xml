@@ -10,6 +10,10 @@
         <result column="count_comment" property="countComment"/>
         <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
         <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+        <association property="user" javaType="com.wechat.pojo.User">
+            <result property="avatarUrl" column="avatarUrl"/>
+            <result property="nickName" column="nickName"/>
+        </association>
        <!-- <collection property="reply" ofType="com.wechat.pojo.Reply">
             <id column="reply_id" property="replyId"></id>
             <result column="reply_context" property="replyContext"></result>
@@ -62,11 +66,21 @@
 
     <select id="listCommentByPost" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
-        *
-        FROM comment
+        c.comment_context ,
+        c.comment_id,
+        c.goodcount,
+        c.post_id,
+        c.count_comment,
+        c.updatetime,
+        s.avatarUrl,
+        s.nickName,
+        s.avatarUrl
+        FROM  COMMENT AS c
+        JOIN  USER AS s ON  c.user_id = s.user_id
         <where>
            post_id = #{postId}
         </where>
+        ORDER BY c.comment_id DESC
     </select>
 
     <select id="getComment" parameterType="map" resultMap="BaseResultMap">

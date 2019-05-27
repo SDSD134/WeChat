@@ -52,4 +52,8 @@ public class PostImage {
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
     }
+
+    public PostImage(String postImageUrl) {
+        this.postImageUrl = postImageUrl;
+    }
 }

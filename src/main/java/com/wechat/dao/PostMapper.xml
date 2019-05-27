@@ -3,62 +3,79 @@
 <mapper namespace="com.wechat.dao.PostMapper">
     <resultMap id="BaseResultMap" type="com.wechat.pojo.Post" >
         <id column="post_id" property="postId" jdbcType="INTEGER" />
-        <id column="post_topic" property="postTopic" jdbcType="VARCHAR" />
+        <result column="post_topic" property="postTopic" jdbcType="VARCHAR" />
         <result column="post_content" property="postContent" jdbcType="VARCHAR" />
         <result column="post_read" property="postRead" jdbcType="VARCHAR" />
         <result column="post_goodCount" property="postGoodCount" jdbcType="VARCHAR" />
-        <result column="post_image" property="postImage" jdbcType="VARCHAR" />
         <result column="user_id" property="userId" jdbcType="VARCHAR" />
         <result column="post_reward" property="postReward" jdbcType="VARCHAR" />
         <result column="post_type" property="postType" jdbcType="VARCHAR" />
         <result column="createtime" property="createTime" jdbcType="TIMESTAMP" />
         <result column="updatetime" property="updateTime" jdbcType="TIMESTAMP" />
-        <result column="post_id" property="isPraise" />
+        <result column="good_post_id" property="isPraise" />
+        <association property="user" javaType="com.wechat.pojo.User">
+            <result property="avatarUrl" column="avatarUrl"/>
+            <result property="nickName" column="nickName"/>
+        </association>
     </resultMap>
 
-    <select id="getPostByUser" parameterType="java.lang.String" resultMap="BaseResultMap">
-         SELECT  * from  post WHERE user_id=#{userId}
+    <select id="getPostByUser" parameterType="java.lang.String" resultType="com.wechat.pojo.Post">
+     SELECT
+      p.post_id postId,
+      p.post_read postRead,
+      p.post_goodCount postGoodCount,
+      p.post_content postContent,
+      p.post_reward postReward,
+      p.user_id userId
+      FROM post AS p
+      WHERE user_id = #{userId}
+      ORDER BY p.post_id DESC
+</select>
+
+    <select id="getImageByPost" parameterType="java.lang.Integer" resultType="java.lang.String">
+       SELECT post_image_url FROM post_image WHERE post_id =#{postId}
     </select>
     <select id="countPostByUser" parameterType="java.lang.String" resultType="java.lang.Integer">
         SELECT  COUNT(*) from  post WHERE user_id=#{userId}
     </select>
-    <select id="getAllPost"  resultMap="BaseResultMap">
-      SELECT
-      p.post_id postId,
-      p.post_read postRead,
-      p.post_goodCount postGoodCount,
-      /*p.post_topic postTopic,*/
-      p.post_content postContent,
-      p.post_image postImage,
-      p.post_reward postReward,
-      p.post_type postType,
-      p.user_id userId,
-      /*p.createtime createTime,
-      p.updatetime updateTime,*/
-      g.post_id isPraise
+    <!--resultType="com.wechat.pojo.Post"-->
+    <select id="getAllPost" parameterType="java.lang.String" resultMap="BaseResultMap">
+     SELECT
+      p.post_id ,
+      p.post_read ,
+      p.post_goodCount ,
+      p.post_content ,
+      p.post_image ,
+      p.post_reward ,
+      p.post_type ,
+      p.user_id ,
+      g.good_post_id isPraise,
+      s.nickName nickName,
+      s.avatarUrl avatarUrl
       FROM  post AS p
-      LEFT JOIN good_post AS g ON g.post_id = p.post_id
-      order by p.post_id DESC
+      LEFT JOIN good_post AS g ON g.post_id = p.post_id AND g.user_id = #{userId}
+      JOIN  USER AS s ON  p.user_id = s.user_id
+      ORDER BY p.post_id DESC
     </select>
     <delete id="deletPostById" parameterType="java.lang.Integer">
         DELETE from post where post_id=#{id}
     </delete>
     <update id="addPraiseById" parameterType="java.lang.Integer">
-        UPDATE post SET post_goodCount=CAST (post_goodCount AS UNSIGNED) + 1 WHERE post_id = #{id};
+        UPDATE post SET post_goodCount= post_goodCount + 1 WHERE post_id = #{id};
     </update>
     <update id="reducePraiseById" parameterType="java.lang.Integer">
-        UPDATE post SET post_goodCount=CAST (post_goodCount AS UNSIGNED) - 1 WHERE post_id = #{id};
+       UPDATE post SET post_goodCount=post_goodCount - 1 WHERE post_id = #{id};
     </update>
     <select id="isExist" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         SELECT  COUNT(*) from  post WHERE post_id = #{id}
     </select>
 
     <insert id="addGoodPost" parameterType="map">
-        INSERT into good_post (post_id,user_id,createtime,updatetime),
+        INSERT into good_post (post_id,user_id,createtime,updatetime)
         VALUES (#{postId},#{userId},NOW(),NOW())
     </insert>
 
-    <select id="countGoodPost" parameterType="map">
+    <select id="countGoodPost" parameterType="map" resultType="java.lang.Integer">
         SELECT count(*) from good_post where user_id= #{userId} and post_id = #{postId}
     </select>
 
@@ -66,13 +83,14 @@
         DELETE FROM good_post where user_id= #{userId} and post_id = #{postId}
     </delete>
 
-    <insert id="addPostById" parameterType="com.wechat.pojo.Post" useGeneratedKeys="true" keyProperty="postId" keyColumn="post_id" >
+    <insert id="addPostById" parameterType="com.wechat.pojo.Post" useGeneratedKeys="true"  keyProperty="postId" >
     INSERT into post (post_content,user_id,createtime,updatetime)
     values (#{postContent},#{userId},NOW(),NOW())
   </insert>
+
     <insert id="addImageByPost" parameterType="map">
-        INSERT into post_image(post_image_url,post_id,createtime,updatetime)
-        VALUES (#{imageUrl},#{postId},NOW(),NOW())
+          INSERT into post_image(post_id,post_image_url,createtime,updatetime)
+           VALUES ( #{postId},#{imageUrl},NOW(),NOW() )
     </insert>
 
     <update id="updatePostRead" parameterType="java.lang.Integer">

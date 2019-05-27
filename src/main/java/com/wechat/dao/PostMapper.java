@@ -23,7 +23,7 @@ public interface PostMapper {
 
     Integer isExist(int id);
 
-    Integer addGoodPost(@Param("userId") String userId, @Param("postId")Integer postId);
+    Integer addGoodPost(@Param("userId") Long userId, @Param("postId")Integer postId);
 
     Integer countGoodPost(@Param("userId") String userId, @Param("postId")Integer postId);
 
@@ -34,4 +34,6 @@ public interface PostMapper {
     Integer addPostById(Post post);
 
     Integer addImageByPost(@Param("postId") Integer postId,@Param("imageUrl")String imageUrl);
+
+    List<String> getImageByPost(Integer postId);
 }

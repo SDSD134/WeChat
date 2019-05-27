@@ -6,6 +6,10 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class RedisUtil {
     private static  String HOST = "39.104.141.30";
     private  static  Integer PORT =6379;
@@ -47,6 +51,7 @@ public class RedisUtil {
      * @param jedis
      */
     public static void close(final Jedis jedis) {
+
         if (jedis != null) {
             jedis.close();
         }
