@@ -11,8 +11,9 @@
         <result column="post_reward" property="postReward" jdbcType="VARCHAR" />
         <result column="post_type" property="postType" jdbcType="VARCHAR" />
         <result column="createtime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="good_post_id" property="isPraise"  jdbcType="VARCHAR" />
         <result column="updatetime" property="updateTime" jdbcType="TIMESTAMP" />
-        <result column="good_post_id" property="isPraise" />
+
         <association property="user" javaType="com.wechat.pojo.User">
             <result property="avatarUrl" column="avatarUrl"/>
             <result property="nickName" column="nickName"/>
@@ -41,6 +42,7 @@
     <!--resultType="com.wechat.pojo.Post"-->
     <select id="getAllPost" parameterType="java.lang.String" resultMap="BaseResultMap">
      SELECT
+      g.good_post_id,
       p.post_id ,
       p.post_read ,
       p.post_goodCount ,
@@ -49,12 +51,12 @@
       p.post_reward ,
       p.post_type ,
       p.user_id ,
-      g.good_post_id isPraise,
-      s.nickName nickName,
-      s.avatarUrl avatarUrl
+      p.updatetime,
+      s.nickName ,
+      s.avatarUrl
       FROM  post AS p
       LEFT JOIN good_post AS g ON g.post_id = p.post_id AND g.user_id = #{userId}
-      JOIN  USER AS s ON  p.user_id = s.user_id
+      LEFT JOIN  USER AS s ON  p.user_id = s.user_id
       ORDER BY p.post_id DESC
     </select>
     <delete id="deletPostById" parameterType="java.lang.Integer">

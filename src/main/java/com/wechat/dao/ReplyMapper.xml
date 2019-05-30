@@ -21,7 +21,7 @@
     <insert id="insertReply" parameterType="com.wechat.pojo.Reply">
         insert into reply
         (reply_context,comment_id,user_id,super_reply_id,super_reply_user_id,createtime,updatetime) VALUES
-        (#{replyId},#{replyContext},#{commentId},#{userId},#{superReplyId},#{superReplyUserId},NOW(),NOW())
+        (#{replyContext},#{commentId},#{userId},#{superReplyId},#{superReplyUserId},NOW(),NOW())
     </insert>
 
     <delete id="deleteReplyById" parameterType="java.lang.Integer">

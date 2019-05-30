@@ -25,7 +25,7 @@ public class CommentServiceImpl implements CommentService {
     public ServerResponse<String> commentPost(Comment comment) {
         Integer insert = commentMapper.insertCommentPost(comment);
         Integer add = commentMapper.updatePostReward(comment.getPostId());
-        if (insert > 0 && add >0)
+        if (insert > 0 )
             return ServerResponse.createBySuccessMessage("评论成功");
 
         return ServerResponse.createByErrorMessage("参数错误");
@@ -66,10 +66,10 @@ public class CommentServiceImpl implements CommentService {
         }
 
         if (delete > 0 && update >0 ) {
-            return ServerResponse.createBySuccessMessage("删除错误");
+            return ServerResponse.createBySuccessMessage("删除成功");
 
         }
-        return ServerResponse.createBySuccessMessage("删除错误");
+        return ServerResponse.createByErrorMessage("删除错误");
     }
 
 
@@ -84,6 +84,9 @@ public class CommentServiceImpl implements CommentService {
 
     public ServerResponse getCommentReply(Comment comment) {
        comment = commentMapper.getComment(comment.getCommentId(),comment.getPostId());
+       if (comment == null) {
+           return  ServerResponse.createBySuccessMessage("此评论不存在");
+       }
        List<Reply> replies = replyMapper.listGetReply(comment.getCommentId());
        if (replies!= null) {
            if (replies.isEmpty()){
@@ -93,5 +96,15 @@ public class CommentServiceImpl implements CommentService {
        }
        comment.setReply(replies);
         return ServerResponse.createBySuccess(comment);
+    }
+
+    @Override
+    public ServerResponse deleteCommentById(String commentId, String userId) {
+        Integer deletCount = commentMapper.deletPostById(commentId,userId);
+        if (deletCount  > 0) {
+            return ServerResponse.createBySuccessMessage("删除成功");
+        }
+        return ServerResponse.createBySuccessMessage("删除失败，参数错误");
+
     }
 }

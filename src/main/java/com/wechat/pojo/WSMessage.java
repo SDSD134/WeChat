@@ -76,15 +76,15 @@ public class WSMessage {
 
     @Override
     public String toString() {
-        return "WSMessage{" +
-                "fromUser='" + fromUser + '\'' +
-                ", toUser='" + toUser + '\'' +
-                ", message='" + message + '\'' +
-                ", messageType='" + messageType + '\'' +
-                ", fromUserName='" + fromUserName + '\'' +
-                ", toUsername='" + toUsername + '\'' +
-                ", fromUserImg='" + fromUserImg + '\'' +
-                ", toUserImg='" + toUserImg + '\'' +
+        return "{" +
+                "\"fromUser\":\"" + fromUser + "\"" +
+                ",\"toUser\":\"" + toUser + "\""  +
+                ",\"message\":\"" + message + "\"" +
+                ",\"messageType\":\"" + messageType + "\""  +
+                ", \"fromUserName\":\"" + fromUserName +"\""  +
+                ", \"toUsername\":\"" + toUsername + "\""  +
+                ", \"fromUserImg\":\"" + fromUserImg +"\"" +
+                ",\"toUserImg\":\"" + toUserImg + "\""  +
                 '}';
     }
 }

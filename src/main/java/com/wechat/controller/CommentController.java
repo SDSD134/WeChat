@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
-@RequestMapping("/comment")
 @Controller
+@RequestMapping("/comment")
 public class CommentController {
     @Autowired
     private CommentService commentService;
@@ -57,16 +57,16 @@ public class CommentController {
         return commentService.deleteReplyById(replyId,commentId);
     }
 
-    /*//通过帖子获取评论
-    @RequestMapping("/listCommentByPost")
+    //删除一级评论
+    @RequestMapping("/deleteCommentById")
     @ResponseBody
-    public ServerResponse listCommentByPost(String postId){
-        if (postId == null) {
-            return ServerResponse.createByErrorMessage("用户参数错误");
+    public ServerResponse deleteCommentById(String commentId,@RequestHeader String userId)  {
+        if (commentId == null) {
+            return ServerResponse.createByErrorMessage("回复参数错误");
         }
-        return commentService.listCommentByPost(postId);
+        return commentService.deleteCommentById(commentId,userId);
 
-    }*/
+    }
 
     @RequestMapping("/getCommentReply")
     @ResponseBody

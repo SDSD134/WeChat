@@ -39,7 +39,8 @@ public class WebSocketPushHandler implements WebSocketHandler {
             System.out.println(userId + "用户未连接建立连接成功");
         }
         System.out.println(userId + "用户已经连接");
-        Jedis jedis = RedisUtil.getJedis();
+        //sendMessageToUser(userId,new TextMessage("连接成功"));
+        /*Jedis jedis = RedisUtil.getJedis();
         try {
             //用户来连接后查看是否有没有接受的消息
             Long count = jedis.llen(userId);
@@ -49,13 +50,13 @@ public class WebSocketPushHandler implements WebSocketHandler {
                 sendMessageToUser(userId,new TextMessage(list.toString()));
             return;
             }
-            sendMessageToUser(userId,new TextMessage("连接成功"));
+
         } catch (Exception e) {
 
         }
         finally {
             jedis.close();
-        }
+        }*/
 
 
 
@@ -116,7 +117,7 @@ public class WebSocketPushHandler implements WebSocketHandler {
                 return;
             }
             try {
-                jedis.lpush(toUser,wsMessage.toString());
+               // jedis.lpush(toUser,wsMessage.toString());
                 jedis.lpush(sessioId,wsMessage.toString());
             } catch (Exception e){
                 jedis.close();
@@ -127,12 +128,14 @@ public class WebSocketPushHandler implements WebSocketHandler {
             sendMessageToUser(webSocketSession,new TextMessage(ServerResponse.createByErrorMessage("该用户不在线").toString()));
             return;
         }
+       // JSONObject object = (JSONObject) new JSONParser().parse(wsMessage.toString());
+
         jedis.lpush(sessioId,wsMessage.toString());
         jedis.close();
 
 
         //成员在线上且发送成功
-        sendMessageToUser(userMap.get(wsMessage.getToUser()),new TextMessage(ServerResponse.createBySuccess("传输成功",wsMessage).toString()));
+        sendMessageToUser(userMap.get(wsMessage.getToUser()),new TextMessage(wsMessage.toString()));
         System.out.println("已发送");
 
 

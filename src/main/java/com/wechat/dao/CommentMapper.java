@@ -28,4 +28,7 @@ public interface CommentMapper {
     Integer updateReduceComment(Integer commentId);
 
     Integer updatePostReward(Integer postId);
+
+    Integer deletPostById(@Param("commentId") String commentId,@Param("userId") String userId);
+
 }
