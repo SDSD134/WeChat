@@ -60,6 +60,9 @@
         FROM
           doctor d
         left join user u on d.user_id = u.user_id
-        where d.status = '1';
+        where d.status = '1'
+    </select>
+    <select id="checkDoctor" parameterType="string" resultType="integer">
+        select doctor_id from doctor where user_id = #{userId} and status = '1'
     </select>
 </mapper>

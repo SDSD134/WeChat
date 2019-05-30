@@ -30,6 +30,7 @@ public class PetController {
     @ResponseBody
     public ServerResponse publishOrUpdate(@RequestParam(value="image")MultipartFile image,Pet pet,HttpServletRequest request, @RequestHeader("userId")String userId) throws Exception {
         pet.setUserId(userId);
+        System.out.println(pet.getPetGender());
         return petService.saveOrUpdate(pet,image);
     }
     @RequestMapping(value = "/deletePet",method = RequestMethod.GET)

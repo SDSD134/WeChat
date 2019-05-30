@@ -11,5 +11,5 @@ public interface DoctorService {
 
     ServerResponse deleteDoctor(Integer doctorId);
 
-    ServerResponse listDoctor();
+    ServerResponse listDoctor(String userId);
 }

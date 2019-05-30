@@ -70,8 +70,6 @@ public class PetServiceImpl implements PetService {
         if (pet != null ) {
             if (!StringUtils.isNotBlank(pet.getWx())||!StringUtils.isNotBlank(pet.getPhone()))
                 return ServerResponse.createByErrorMessage("微信和手机号必须留一个");
-            if (!StringUtils.isNotBlank(pet.getPetTitle()))
-                return ServerResponse.createByErrorMessage("必须添加标题");
             if (!StringUtils.isNotBlank(pet.getPetAge()))
                 return ServerResponse.createByErrorMessage("添加宠物年龄");
             if (!StringUtils.isNotBlank(pet.getPetBreed()))

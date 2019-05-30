@@ -4,6 +4,7 @@ package com.wechat.service.impl;
 import com.mysql.fabric.Server;
 import com.wechat.common.ServerResponse;
 
+import com.wechat.dao.DoctorMapper;
 import com.wechat.dao.PostMapper;
 import com.wechat.dao.UserMapper;
 import com.wechat.pojo.Doctor;
@@ -38,6 +39,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private PostMapper postMapper;
+    @Autowired
+    private DoctorMapper doctorMapper;
     @Value("${APPID}")
     private String APPID;
     @Value("${SECRET}")
@@ -243,6 +246,7 @@ public class UserServiceImpl implements UserService {
     public ServerResponse applyToDoctor(String userId, String desc, MultipartFile[] images) throws Exception {
         if (!StringUtils.isNotBlank(userId))
             return ServerResponse.createByErrorMessage("请传入用户id");
+
         OSSClientUtil ossClientUtil = new OSSClientUtil();
         String doctor_work_image = null;
         for (int i = 0;i<images.length;i++){

@@ -81,6 +81,9 @@
              <if test="pet.petCity != null">
                  and p.pet_city = #{pet.petCity}
              </if>
+            <if test="pet.userId != null">
+                and p.user_id = #{pet.userId}
+            </if>
         </where>
         order by p.pet_id desc
     </select>
