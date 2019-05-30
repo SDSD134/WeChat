@@ -1,5 +1,7 @@
 package com.wechat.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class Post {
 
     private List<String> postImage;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date updateTime;
 
     public List<String> getPostImage() {

@@ -13,7 +13,7 @@ public interface PostMapper {
 
     Integer  countPostByUser (String userId);
 
-    List<Post>  getAllPost();
+    List<Post>  getAllPost(String userId);
 
     Integer deletPostById(int id);
 
@@ -23,7 +23,7 @@ public interface PostMapper {
 
     Integer isExist(int id);
 
-    Integer addGoodPost(@Param("userId") Long userId, @Param("postId")Integer postId);
+    Integer addGoodPost(@Param("userId") String userId, @Param("postId")Integer postId);
 
     Integer countGoodPost(@Param("userId") String userId, @Param("postId")Integer postId);
 

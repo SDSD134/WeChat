@@ -47,7 +47,7 @@ public class PostServiceImpl implements PostService {
     public ServerResponse getAllPost(int pageNum, int pageSize,String userId) {
         //PageHelper只对紧跟着的第一个SQL语句起作用
         PageHelper.startPage(pageNum, pageSize);
-        List<Post> postList = postMapper.getAllPost();
+        List<Post> postList = postMapper.getAllPost(userId);
         for (Post post : postList) {
             post.setPostImage(postMapper.getImageByPost(post.getPostId()));
         }
@@ -104,7 +104,7 @@ public class PostServiceImpl implements PostService {
                 try {
                     addCount = postMapper.addPraiseById(id);
                     //添加点赞记录
-                    praise = postMapper.addGoodPost(Long.parseLong(userId), id);
+                    praise = postMapper.addGoodPost(userId, id);
                 } catch (RuntimeException e) {
                     flag = 1;
                     throw e;
@@ -115,7 +115,7 @@ public class PostServiceImpl implements PostService {
 
                 if (addCount > 0 && praise > 0)
                     return ServerResponse.createBySuccessMessage("点赞成功");
-                Integer addGood = postMapper.addGoodPost(Long.parseLong(userId), id);
+                Integer addGood = postMapper.addGoodPost(userId, id);
 
             }
 

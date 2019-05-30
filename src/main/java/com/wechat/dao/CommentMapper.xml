@@ -14,16 +14,16 @@
             <result property="avatarUrl" column="avatarUrl"/>
             <result property="nickName" column="nickName"/>
         </association>
-       <!-- <collection property="reply" ofType="com.wechat.pojo.Reply">
-            <id column="reply_id" property="replyId"></id>
-            <result column="reply_context" property="replyContext"></result>
-            <result column="comment_id" property="commentId"></result>
-            <result column="user_id" property="userId"></result>
-            <result column="super_reply_id" property="superReplyId"></result>
-            <result column="super_reply_user_id" property="superReplyUserId"></result>
-            <result column="createtime" property="createtime"></result>
-            <result column="updatetime" property="updatetime"></result>
-        </collection>-->
+        <!-- <collection property="reply" ofType="com.wechat.pojo.Reply">
+             <id column="reply_id" property="replyId"></id>
+             <result column="reply_context" property="replyContext"></result>
+             <result column="comment_id" property="commentId"></result>
+             <result column="user_id" property="userId"></result>
+             <result column="super_reply_id" property="superReplyId"></result>
+             <result column="super_reply_user_id" property="superReplyUserId"></result>
+             <result column="createtime" property="createtime"></result>
+             <result column="updatetime" property="updatetime"></result>
+         </collection>-->
     </resultMap>
     <!--<resultMap id="ReplyMap" type="com.wechat.pojo.Reply" >
         <id column="reply_id" property="replyId" jdbcType="INTEGER" />
@@ -37,35 +37,36 @@
     </resultMap>-->
 
     <insert id="insertCommentPost" parameterType="com.wechat.pojo.Comment" >
-        INSERT into comment (user_id,post_id,goodcount,comment_text,updatetime,creatime)
-        values (#{userId},#{postId},#{goodcount},#{commentContext},NOW(),NOW())
+        INSERT into comment (user_id,post_id,goodcount,comment_context,updatetime,createtime)
+        values (#{userId},#{postId},#{goodCount},#{commentContext},NOW(),NOW())
     </insert>
 
-   <!-- <select id="getCommentReply" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-      SELECT
-      c.comment_id commentId,
-      c.user_id userId,
-      c.post_id postId,
-      c.goodcount goodcount,
-      c.comment_context commentContext,
-      c.count_comment countComment,
-      r.reply_id replyId,
-      r.reply_context replyContext,
-      r.comment_id commentId,
-      r.super_reply_id superReplyId,
-      r.super_reply_user_id superReplyUserId,
-      r.user_id userId,
-      u.nickName nickName
-      FROM  comment AS c
-      LEFT JOIN reply r on r.comment_id = c.comment_id
-      LEFT  JOIN user u on u.user_id = r.user_id
-      <where>
-          c.comment_id = #{commentId}
-      </where>
-    </select>-->
+    <!-- <select id="getCommentReply" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+       SELECT
+       c.comment_id commentId,
+       c.user_id userId,
+       c.post_id postId,
+       c.goodcount goodcount,
+       c.comment_context commentContext,
+       c.count_comment countComment,
+       r.reply_id replyId,
+       r.reply_context replyContext,
+       r.comment_id commentId,
+       r.super_reply_id superReplyId,
+       r.super_reply_user_id superReplyUserId,
+       r.user_id userId,
+       u.nickName nickName
+       FROM  comment AS c
+       LEFT JOIN reply r on r.comment_id = c.comment_id
+       LEFT  JOIN user u on u.user_id = r.user_id
+       <where>
+           c.comment_id = #{commentId}
+       </where>
+     </select>-->
 
     <select id="listCommentByPost" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
+        c.user_id,
         c.comment_context ,
         c.comment_id,
         c.goodcount,
@@ -78,7 +79,7 @@
         FROM  COMMENT AS c
         JOIN  USER AS s ON  c.user_id = s.user_id
         <where>
-           post_id = #{postId}
+            post_id = #{postId}
         </where>
         ORDER BY c.comment_id DESC
     </select>
@@ -88,17 +89,25 @@
         *
         FROM comment WHERE comment_id=#{commentId} and post_id = #{postId}
     </select>
-    
+
     <update id="updatePlusComment" parameterType="java.lang.Integer">
-      UPDATE comment SET count_comment=CAST (count_comment AS UNSIGNED) + 1 WHERE comment_id = #{commentId};
+      UPDATE comment SET count_comment=count_comment + 1 WHERE comment_id = #{commentId};
     </update>
 
     <update id="updateReduceComment"  parameterType="java.lang.Integer">
-        UPDATE comment SET count_comment=CAST (count_comment AS UNSIGNED) - 1 WHERE comment_id = #{commentId};
+       UPDATE post SET post_reward=post_reward - 1 WHERE post_id = #{postId};
     </update>
     <update id="updatePostReward"  parameterType="java.lang.Integer">
-        UPDATE post SET count_comment=CAST (count_comment AS UNSIGNED) - 1 WHERE comment_id = #{commentId};
+        UPDATE post SET post_reward=post_reward + 1 WHERE post_id = #{postId};
     </update>
+    <update id="updateReducePostReward"  parameterType="java.lang.Integer">
+        UPDATE post SET post_reward=post_reward - 1 WHERE post_id = #{postId};
+    </update>
+
+
+    <delete id="deletPostById"  parameterType="java.lang.String">
+        delete from comment where comment_id = #{commentId} and user_id=#{userId}
+    </delete>
 
 
 </mapper>

@@ -15,4 +15,6 @@ public interface CommentService {
     ServerResponse listCommentByPost(String postId);
 
     ServerResponse getCommentReply(Comment comment);
+
+    ServerResponse deleteCommentById(String commentId, String userId);
 }
