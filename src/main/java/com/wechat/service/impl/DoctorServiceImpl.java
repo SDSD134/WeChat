@@ -65,12 +65,20 @@ public class DoctorServiceImpl implements DoctorService {
                 conversation.getUser().setNickName(user.getNickName());
                 conversation.getUser().setAvatarUrl(user.getAvatarUrl());
             }
-            return ServerResponse.createBySuccess(conversationList);
+            return ServerResponse.createBySuccess("医生",conversationList);
         }
         List<Doctor> doctors = doctorMapper.listDoctor();
         if (doctors == null || doctors.isEmpty()) {
             return ServerResponse.createByErrorMessage("没有医生");
         }
-        return ServerResponse.createBySuccess(doctors);
+        return ServerResponse.createBySuccess("普通用户",doctors);
+    }
+
+    public ServerResponse saveConversation(Integer doctorTd,String userId){
+        int resultCount = conversationMapper.saveConversation(doctorTd,userId);
+        if(resultCount > 0){
+            return ServerResponse.createBySuccessMessage("创建聊天会话成功");
+        }
+        return ServerResponse.createByErrorMessage("创建聊天会话失败");
     }
 }

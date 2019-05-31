@@ -12,4 +12,6 @@ public interface DoctorService {
     ServerResponse deleteDoctor(Integer doctorId);
 
     ServerResponse listDoctor(String userId);
+
+    ServerResponse saveConversation(Integer doctorTd,String userId);
 }

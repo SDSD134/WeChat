@@ -16,4 +16,5 @@ public interface DoctorMapper {
     List<Doctor> listDoctor();
 
     Integer checkDoctor(@Param("userId") String userId);
+
 }

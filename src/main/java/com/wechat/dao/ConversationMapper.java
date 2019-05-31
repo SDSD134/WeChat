@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ConversationMapper {
     List<Conversation> listConversation(@Param("doctorId") Integer doctorId);
+
+    int saveConversation(@Param("doctorId") Integer doctorId,@Param("userId") String userId);
 }

@@ -1,6 +1,6 @@
 package com.wechat.util;
 
-import com.sun.tools.corba.se.idl.StringGen;
+
 import org.springframework.beans.factory.annotation.Value;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
