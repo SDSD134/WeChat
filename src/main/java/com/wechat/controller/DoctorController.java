@@ -19,5 +19,10 @@ public class DoctorController {
         return doctorService.listDoctor(userId);
     }
 
+    @RequestMapping(value = "/conversation",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse conversation(Integer doctorId,String userId) {
+        return doctorService.saveConversation(doctorId,userId);
+    }
 
 }

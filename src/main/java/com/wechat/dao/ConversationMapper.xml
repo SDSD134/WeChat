@@ -4,4 +4,15 @@
     <select id="listConversation" parameterType="Integer" resultType="conversation">
         select * from conversation where doctor_id = #{doctorId}
     </select>
+    <insert id="saveConversation">
+        INSERT INTO `conversation` (
+          `doctor_id`,
+          `user_id`
+        )
+        VALUES
+          (
+            #{doctorId},
+            #{userId}
+          )
+    </insert>
 </mapper>
